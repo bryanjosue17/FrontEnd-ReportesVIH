@@ -1,6 +1,6 @@
 import moment from "moment";
 
-export const peliculasInterface = (data = {}) => {
+export const reportesInterface = (data = {}) => {
   return {
     id_pelicula: data?.id_pelicula || null,
     nombre: data?.nombre || "",

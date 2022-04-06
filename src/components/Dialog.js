@@ -33,8 +33,8 @@ export default function DialogForm({
           {tipo === "create" ? (
             <></>
           ) : (
-            <IconButton style={{ marginRight: "1%" }} aria-label="delete">
-              <DeleteIcon style={{ color: "red" }} onClick={handleDelete} />
+            <IconButton style={{ marginRight: "1%" }}  onClick={handleDelete} aria-label="delete">
+              <DeleteIcon style={{ color: "red" }} />
             </IconButton>
           )}
         </div>

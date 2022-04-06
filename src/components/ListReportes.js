@@ -5,16 +5,14 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  cleanDetallePelicula,
-  cleanPeliculas,
-  createPelicula,
-  deletePelicula,
-  deletePeliculas,
-  findPeliculasByNombre,
-  retrievePelicula,
-  retrievePeliculas,
-  updatePelicula,
-} from "../store/actions/peliculas.actions";
+  cleanDetalleReportes,
+  cleanReportes,
+  createReportes,
+  deleteReporte,
+  retrieveReporte,
+  retrieveReportes,
+  updateReporte,
+} from "../store/actions/reportes.actions";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import DialogForm from "./Dialog";
@@ -26,38 +24,38 @@ import { Grid } from "@mui/material";
 const ListReportes = () => {
   const [tipo, setTipo] = React.useState("");
   const [open, setOpen] = React.useState(false);
-  const [searchPelicula, setSearchPelicula] = useState("");
+  const [searchReporte, setSearchReporte] = useState("");
 
   const dispatch = useDispatch();
   const { addToast } = useToasts();
 
-  const detallePelicula = useSelector(({ state }) => state.detallePeliculas);
-  const peliculas = useSelector(({ state }) => state.peliculas);
+  const detalleReporte = useSelector(({ state }) => state.detalleReporte);
+  const reportes = useSelector(({ state }) => state.reportes);
 
   useEffect(() => {
-    dispatch(retrievePeliculas());
+    dispatch(retrieveReportes());
   }, [dispatch]);
 
-  const onChangeSearchPelicula = (e) => {
-    const searchAgencia = e.target.value;
-    setSearchPelicula(searchAgencia);
+  const onChangeSearchReporte = (e) => {
+    const searchReporte = e.target.value;
+    setSearchReporte(searchReporte);
   };
 
   const refreshData = () => {
-    dispatch(cleanPeliculas());
+    dispatch(cleanReportes());
   };
-  const findByPelicula = () => {
+  const findByDate = () => {
     refreshData();
 
-    if (searchPelicula.length < 1) {
-      dispatch(retrievePeliculas());
+    if (searchReporte.length < 1) {
+      dispatch(retrieveReportes());
     } else {
-      dispatch(findPeliculasByNombre(searchPelicula));
+      dispatch(findByDate(searchReporte));
     }
   };
 
   const handleClickOpen = () => {
-    dispatch(cleanDetallePelicula());
+    dispatch(cleanDetalleReportes());
     setOpen(true);
     setTipo("create");
   };
@@ -66,18 +64,98 @@ const ListReportes = () => {
     setOpen(false);
   };
 
-  const verDetallePelicula = (id) => {
-    dispatch(retrievePelicula(id));
+  const verDetalleReporte = (id) => {
+    dispatch(retrieveReporte(id));
     setOpen(true);
     setTipo("update");
   };
 
   const handleCreateOrEdit = () => {
-    const { id_pelicula, nombre, genero, autor, anio, datetime } =
-      detallePelicula;
+    const {
+      id_reporte,
+      responsable,
+      tipo_cargo,
+      tipo_servicio,
+      no_hoja,
+      date,
+      no_orden,
+      dia_consulta,
+      primer_nombre,
+      segundo_nombre,
+      primer_apellido,
+      segundo_apellido,
+      cui,
+      nacionalidad,
+      departamento_nac,
+      municipio_nac,
+      fecha_nac,
+      lugar_poblado,
+      sexo,
+      orientacion_sexual,
+      identidad_genero,
+      estado_civil,
+      escolaridad,
+      pueblo,
+      comunidad_len,
+      condicion_riesgo,
+      motivo_orientacion,
+      control_prenatal,
+      semana_gestacion,
+      orientacion_preprueba,
+      resultados_tamizaje,
+      resultados_prueba_vih,
+      prueba_treponemica,
+      prueba_no_treponemica,
+      resultado_difucion,
+      referencia,
+      uai_ref,
+      observaciones,
+      datetime,
+    } = detalleReporte;
 
-    if (id_pelicula === null) {
-      dispatch(createPelicula(nombre, autor, genero, anio, datetime))
+    if (id_reporte === null) {
+      dispatch(
+        createReportes(
+          responsable,
+          tipo_cargo,
+          tipo_servicio,
+          no_hoja,
+          date,
+          no_orden,
+          dia_consulta,
+          primer_nombre,
+          segundo_nombre,
+          primer_apellido,
+          segundo_apellido,
+          cui,
+          nacionalidad,
+          departamento_nac,
+          municipio_nac,
+          fecha_nac,
+          lugar_poblado,
+          sexo,
+          orientacion_sexual,
+          identidad_genero,
+          estado_civil,
+          escolaridad,
+          pueblo,
+          comunidad_len,
+          condicion_riesgo,
+          motivo_orientacion,
+          control_prenatal,
+          semana_gestacion,
+          orientacion_preprueba,
+          resultados_tamizaje,
+          resultados_prueba_vih,
+          prueba_treponemica,
+          prueba_no_treponemica,
+          resultado_difucion,
+          referencia,
+          uai_ref,
+          observaciones,
+          datetime
+        )
+      )
         .then(() => {
           addToast("La información se ha insertado correctamente.", {
             appearance: "success",
@@ -93,7 +171,7 @@ const ListReportes = () => {
           setOpen(false);
         });
     } else {
-      dispatch(updatePelicula(id_pelicula, detallePelicula))
+      dispatch(updateReporte(id_reporte, detalleReporte))
         .then(() => {
           addToast("La información se ha actualizado correctamente.", {
             appearance: "info",
@@ -108,25 +186,7 @@ const ListReportes = () => {
   };
 
   const handleDelete = () => {
-    dispatch(deletePelicula(detallePelicula.id_pelicula))
-      .then(() => {
-        addToast("La información se ha eliminado correctamente.", {
-          appearance: "error",
-          autoDismiss: true,
-        });
-        setOpen(false);
-      })
-      .catch((e) => {
-        addToast("Ha sucedido un error", {
-          appearance: "error",
-          autoDismiss: true,
-        });
-        setOpen(false);
-      });
-  };
-
-  const handleDeleteAll = () => {
-    dispatch(deletePeliculas())
+    dispatch(deleteReporte(detalleReporte.id_reporte))
       .then(() => {
         addToast("La información se ha eliminado correctamente.", {
           appearance: "error",
@@ -191,7 +251,7 @@ const ListReportes = () => {
       renderCell: (params) => {
         return (
           <button
-            onClick={() => verDetallePelicula(params.row.id_pelicula)}
+            onClick={() => verDetalleReporte(params.row.id_reporte)}
             className="btn btn-warning btn-sm"
           >
             Editar
@@ -205,8 +265,6 @@ const ListReportes = () => {
   return (
     <div
       style={{
-        backgroundColor: "white",
-        height: "100vh",
         justifyContent: "center",
         alignSelf: "center",
         display: "flex",
@@ -223,18 +281,18 @@ const ListReportes = () => {
       >
         <div style={{ width: "50%" }}>
           <InputField
-            variante="filled"
+            variant="filled"
             type="text"
-            texto="Buscar por agencia"
-            value={searchPelicula}
-            onChange={onChangeSearchPelicula}
+            label="Buscar por agencia"
+            value={searchReporte}
+            onChange={onChangeSearchReporte}
           />
         </div>
 
         <ButtonComponent
-          texto="Buscar"
-          variante="outlined"
-          onClick={findByPelicula}
+          label="Buscar"
+          variant="outlined"
+          onClick={findByDate}
         ></ButtonComponent>
       </div>
 
@@ -246,24 +304,18 @@ const ListReportes = () => {
           flexDirection: "column",
         }}
       >
-        <TextField variante="h4" texto="Listado de peliculas"></TextField>
+        <TextField variant="h4" label="Listado de reportes"></TextField>
 
         <div style={{ height: 300, width: 900 }}>
           <DataGrid
-            rows={peliculas || []}
+            rows={reportes || []}
             columns={columns || []}
             pageSize={5}
             rowsPerPageOptions={[5]}
             disableSelectionOnClick
-            getRowId={(row) => row.id_pelicula}
+            getRowId={(row) => row.id_reporte}
           />
         </div>
-
-        <ButtonComponent
-          variante="outlined"
-          texto="Borrar todo"
-          onClick={handleDeleteAll}
-        ></ButtonComponent>
       </Paper>
       <div
         style={{ display: "flex", bottom: 10, right: 10, position: "absolute" }}

@@ -5,7 +5,7 @@ import TextField from "./TextField";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import { useToasts } from "react-toast-notifications";
-import { changeKeyPeliculas } from "../store/actions/peliculas.actions";
+import { changeKeyReportes } from "../store/actions/reportes.actions";
 import { useDispatch, useSelector } from "react-redux";
 
 const FormPeli = () => {
@@ -15,7 +15,7 @@ const FormPeli = () => {
 
   const handleChange = (e) => {
     let data = { [e.target.name]: e.target.value };
-    dispatch(changeKeyPeliculas(data));
+    dispatch(changeKeyReportes(data));
   };
 
   return (

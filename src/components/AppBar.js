@@ -10,6 +10,8 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import { useHistory } from "react-router-dom";
+import Avatar from "@mui/material/Avatar";
+import logo from "../assets/logo.png";
 
 const ResponsiveAppBar = () => {
   const history = useHistory();
@@ -23,15 +25,13 @@ const ResponsiveAppBar = () => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
     history.push("/inicio");
-
   };
 
   return (
     <AppBar position="static" style={{ background: "#2E3B55" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-        <Avatar alt="logo" src="../assets/logo" />
-
+          <Avatar sx={{ width: 75, height: 75 }} alt="logo" src={logo} />
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton

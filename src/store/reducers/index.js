@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import state from "./peliculas.reducer";
+import state from "./reportes.reducer";
 export default combineReducers({
   state,
 });

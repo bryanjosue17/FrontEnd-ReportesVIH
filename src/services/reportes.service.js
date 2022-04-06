@@ -1,33 +1,33 @@
 import http from "./http.service";
 
-class PeliculaDataService {
+class ReporteDataService {
   getAll() {
-    return http.get("/peliculas");
+    return http.get("/reportes");
   }
 
   get(id) {
-    return http.get(`/peliculas/${id}`);
+    return http.get(`/reportes/${id}`);
   }
 
   create(data) {
-    return http.post("/peliculas", data);
+    return http.post("/reportes", data);
   }
 
   update(id, data) {
-    return http.put(`/peliculas/${id}`, data);
+    return http.put(`/reportes/${id}`, data);
   }
 
   delete(id) {
-    return http.delete(`/peliculas/${id}`);
+    return http.delete(`/reportes/${id}`);
   }
 
   deleteAll() {
-    return http.delete(`/peliculas`);
+    return http.delete(`/reportes`);
   }
 
-  findByNombre(nombre) {
-    return http.get(`/peliculas?nombre=${nombre}`);
+  findByDate(date) {
+    return http.get(`/reportes?date=${date}`);
   }
 }
 
-export default new PeliculaDataService();
+export default new ReporteDataService();
