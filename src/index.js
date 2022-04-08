@@ -7,17 +7,32 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store/store";
 import { ToastProvider } from "react-toast-notifications";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { indigo, yellow } from "@mui/material/colors";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: indigo[500],
+    },
+    secondary: {
+      main: yellow[500],
+    },
+  },
+});
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <ToastProvider placement="bottom-center">
-          <App />
-        </ToastProvider>
-      </BrowserRouter>
-    </Provider>
-  </React.StrictMode>,
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <BrowserRouter>
+          <ToastProvider placement="bottom-center">
+            <App />
+          </ToastProvider>
+        </BrowserRouter>
+      </Provider>
+    </ThemeProvider>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

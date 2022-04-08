@@ -28,7 +28,7 @@ const ResponsiveAppBar = () => {
   };
 
   return (
-    <AppBar position="static" style={{ background: "#2E3B55" }}>
+    <AppBar position="static" >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Avatar sx={{ width: 75, height: 75 }} alt="logo" src={logo} />
@@ -67,6 +67,7 @@ const ResponsiveAppBar = () => {
               </MenuItem>
             </Menu>
           </Box>
+
           <Typography
             variant="h6"
             noWrap

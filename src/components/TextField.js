@@ -3,8 +3,8 @@ import Typography from "@mui/material/Typography";
 
 const TextField = (props) => {
   return (
-    <div style={{ margin: "3%" }}>
-      <Typography variant={props.variant}>{props.label}</Typography>
+    <div >
+      <Typography style={props.style} variant={props.variant}>{props.label}</Typography>
     </div>
   );
 };
