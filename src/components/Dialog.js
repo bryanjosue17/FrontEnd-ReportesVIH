@@ -1,10 +1,8 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import FormPeli from "./Form";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -19,7 +17,23 @@ export default function DialogForm({
 }) {
   return (
     <div>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        sx={{
+          "& .MuiDialog-container": {
+            "& .MuiPaper-root": {
+              width: "100%",
+              maxWidth: "800px",
+            },
+          },
+        }}
+        PaperProps={{
+          style: {
+            backgroundColor: "#E7EAF3",
+          },
+        }}
+      >
         <div
           style={{
             display: "flex",
@@ -28,12 +42,18 @@ export default function DialogForm({
             justifyContent: "space-between",
           }}
         >
-          <DialogTitle>Ingrese pelicula:</DialogTitle>
+          <DialogTitle variant={"h5"} style={{ fontWeight: "bold" }}>
+            Ingrese reporte:
+          </DialogTitle>
 
           {tipo === "create" ? (
             <></>
           ) : (
-            <IconButton style={{ marginRight: "1%" }}  onClick={handleDelete} aria-label="delete">
+            <IconButton
+              style={{ marginRight: "1%" }}
+              onClick={handleDelete}
+              aria-label="delete"
+            >
               <DeleteIcon style={{ color: "red" }} />
             </IconButton>
           )}

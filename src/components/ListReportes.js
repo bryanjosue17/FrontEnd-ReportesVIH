@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import TextField from "./TextField";
 import Paper from "@mui/material/Paper";
 import { DataGrid } from "@mui/x-data-grid";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   cleanDetalleReportes,
@@ -19,7 +18,6 @@ import DialogForm from "./Dialog";
 import { useToasts } from "react-toast-notifications";
 import ButtonComponent from "./Button";
 import InputField from "./InputField";
-import { Grid } from "@mui/material";
 
 const ListReportes = () => {
   const [tipo, setTipo] = React.useState("");
@@ -205,37 +203,312 @@ const ListReportes = () => {
 
   const columns = [
     {
-      field: "nombre",
-      headerName: "Nombre",
+      field: "responsable",
+      headerName: "Responsable",
       sortable: true,
       width: 200,
       align: "center",
       headerAlign: "center",
     },
     {
-      field: "autor",
-      headerName: "Autor",
+      field: "tipo_cargo",
+      headerName: "Tipo cargo",
       sortable: true,
       width: 200,
       align: "center",
       headerAlign: "center",
     },
     {
-      field: "genero",
-      headerName: "Género",
+      field: "tipo_servicio",
+      headerName: "Tipo servicio",
       sortable: true,
       width: 200,
       align: "center",
       headerAlign: "center",
     },
     {
-      field: "anio",
-      headerName: "Año",
+      field: "no_hoja",
+      headerName: "No. hoja",
       sortable: true,
       width: 200,
       align: "center",
       headerAlign: "center",
     },
+    {
+      field: "date",
+      headerName: "Fecha ingreso",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "no_orden",
+      headerName: "No. orden",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "dia_consulta",
+      headerName: "Día consulta",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "primer_nombre",
+      headerName: "Primer nombre",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "segundo_nombre",
+      headerName: "Segundo nombre",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "primer_apellido",
+      headerName: "Primer apellido",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "segundo_apellido",
+      headerName: "Segundo apellido",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "cui",
+      headerName: "Cui",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "nacionalidad",
+      headerName: "Nacionalidad",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "departamento_nac",
+      headerName: "Departamento nacimiento",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "municipio_nac",
+      headerName: "Muncipio nacimiento",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "departamento_nac",
+      headerName: "Departamento nacimiento",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "fecha_nac",
+      headerName: "Fecha nacimiento",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "lugar_poblado",
+      headerName: "Lugar poblado",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "sexo",
+      headerName: "Sexo",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "orientacion_sexual",
+      headerName: "Orientación sexual",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "identidad_genero",
+      headerName: "Identidad género",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "estado_civil",
+      headerName: "Estado civil",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "escolaridad",
+      headerName: "Escolaridad",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "pueblo",
+      headerName: "Pueblo",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "comunidad_len",
+      headerName: "Comunidad lingüística",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "condicion_riesgo",
+      headerName: "Condición riesgo",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "motivo_orientacion",
+      headerName: "Motivo de orientación",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "control_prenatal",
+      headerName: "Control prenatal",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "semana_gestacion",
+      headerName: "Semana gestación",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "orientacion_preprueba",
+      headerName: "Orientación preprueba",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "resultados_tamizaje",
+      headerName: "Resultados tamizaje",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "resultados_prueba_vih",
+      headerName: "Resultados Prueba VIH",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "prueba_treponemica",
+      headerName: "Prueba treponemica",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "prueba_no_treponemica",
+      headerName: "Prueba No. treponémica",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "resultado_difucion",
+      headerName: "Resultado difucion",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+
+    {
+      field: "referencia",
+      headerName: "Referencia",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+
+    {
+      field: "uai_ref",
+      headerName: "UAI ref",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "observaciones",
+      headerName: "Observaciones",
+      sortable: true,
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+
     {
       field: "datetime",
       headerName: "Fecha ingreso",
@@ -283,7 +556,7 @@ const ListReportes = () => {
           <InputField
             variant="filled"
             type="text"
-            label="Buscar por agencia"
+            label="Buscar por fecha"
             value={searchReporte}
             onChange={onChangeSearchReporte}
           />
@@ -304,7 +577,9 @@ const ListReportes = () => {
           flexDirection: "column",
         }}
       >
-        <TextField variant="h4" label="Listado de reportes"></TextField>
+        <div style={{ margin: "3%" }}>
+          <TextField variant="h4" label="Listado de reportes"></TextField>
+        </div>
 
         <div style={{ height: 300, width: 900 }}>
           <DataGrid
