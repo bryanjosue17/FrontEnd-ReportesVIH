@@ -9,6 +9,8 @@ import store from "./store/store";
 import { ToastProvider } from "react-toast-notifications";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { indigo, yellow } from "@mui/material/colors";
+import AdapterMoment from "@mui/lab/AdapterMoment";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
 
 const theme = createTheme({
   palette: {
@@ -24,13 +26,15 @@ const theme = createTheme({
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <Provider store={store}>
-        <BrowserRouter>
-          <ToastProvider placement="bottom-center">
-            <App />
-          </ToastProvider>
-        </BrowserRouter>
-      </Provider>
+      <LocalizationProvider dateAdapter={AdapterMoment}>
+        <Provider store={store}>
+          <BrowserRouter>
+            <ToastProvider placement="bottom-center">
+              <App />
+            </ToastProvider>
+          </BrowserRouter>
+        </Provider>
+      </LocalizationProvider>
     </ThemeProvider>
   </React.StrictMode>
 );

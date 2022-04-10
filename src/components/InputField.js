@@ -3,7 +3,6 @@ import TextField from "@mui/material/TextField";
 
 const InputField = (props) => {
   return (
-    <div style={{ margin: "3%" }}>
       <TextField
         type={props.type}
         onInput={props.onInput}
@@ -13,12 +12,12 @@ const InputField = (props) => {
         variant={props.variant}
         value={props.value}
         onChange={(event) =>
+          props.onChange &&
           props.onChange({
             target: { value: event.target.value, name: props.name },
           })
         }
       />
-    </div>
   );
 };
 

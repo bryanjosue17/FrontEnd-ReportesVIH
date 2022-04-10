@@ -250,7 +250,7 @@ const ListReportes = () => {
       align: "center",
       headerAlign: "center",
     },
-    {
+    /*  {
       field: "dia_consulta",
       headerName: "Día consulta",
       sortable: true,
@@ -516,19 +516,18 @@ const ListReportes = () => {
       width: 200,
       align: "center",
       headerAlign: "center",
-    },
+    }, */
     {
       field: "action",
       headerAlign: "center",
       headerName: "Acciones",
       renderCell: (params) => {
         return (
-          <button
+          <ButtonComponent
             onClick={() => verDetalleReporte(params.row.id_reporte)}
-            className="btn btn-warning btn-sm"
-          >
-            Editar
-          </button>
+            label={"Editar"}
+            variant={"outlined"}
+          ></ButtonComponent>
         );
       },
       align: "center",
