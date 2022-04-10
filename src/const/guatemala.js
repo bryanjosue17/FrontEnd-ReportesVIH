@@ -1,5 +1,9 @@
 export const Guatemala = {
+<<<<<<< HEAD
     "Alta Verapaz": [
+=======
+    "AltaVerapaz": [
+>>>>>>> main
         "Cahabón",
         "Chahal",
         "Chisec",
@@ -18,7 +22,11 @@ export const Guatemala = {
         "Tucurú",
         "Santa Catarina La Tinta"
     ],
+<<<<<<< HEAD
     "Baja Verapaz": [
+=======
+    "BajaVerapaz": [
+>>>>>>> main
         "Cubulco",
         "Granados",
         "Purulhá",
