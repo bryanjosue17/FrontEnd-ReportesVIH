@@ -9,11 +9,8 @@ import store from "./store/store";
 import { ToastProvider } from "react-toast-notifications";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { indigo, yellow } from "@mui/material/colors";
-<<<<<<< HEAD
-=======
 import AdapterMoment from "@mui/lab/AdapterMoment";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
->>>>>>> main
 
 const theme = createTheme({
   palette: {
@@ -29,15 +26,6 @@ const theme = createTheme({
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-<<<<<<< HEAD
-      <Provider store={store}>
-        <BrowserRouter>
-          <ToastProvider placement="bottom-center">
-            <App />
-          </ToastProvider>
-        </BrowserRouter>
-      </Provider>
-=======
       <LocalizationProvider dateAdapter={AdapterMoment}>
         <Provider store={store}>
           <BrowserRouter>
@@ -47,7 +35,6 @@ createRoot(document.getElementById("root")).render(
           </BrowserRouter>
         </Provider>
       </LocalizationProvider>
->>>>>>> main
     </ThemeProvider>
   </React.StrictMode>
 );

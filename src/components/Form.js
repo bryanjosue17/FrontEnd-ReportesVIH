@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React, { useState } from "react";
-=======
 import React, { useEffect, useState } from "react";
->>>>>>> main
 import InputField from "./InputField";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
@@ -10,57 +6,45 @@ import { changeKeyReportes } from "../store/actions/reportes.actions";
 import { useDispatch, useSelector } from "react-redux";
 import useCollapse from "react-collapsed";
 import TextField from "./TextField";
-<<<<<<< HEAD
-
-const Form = () => {
-  return (
-    <div>
-      <DatosGenerales></DatosGenerales>
-=======
 import DateTimePicker from "./DatePicker";
 import SelectField from "./SelectField";
-import * as Catalogos from "../const/guatemala";
+import { catalogs } from "../const/catalogs";
+
 const Form = () => {
-  const [catalogos, setCatalogos] = useState(null);
+  const [catalogos, setCatalogos] = useState();
+ 
   useEffect(() => {
-    setCatalogos(Catalogos.Guatemala);
+    setCatalogos(catalogs);
   }, [catalogos]);
+
+
+  
 
   return (
     <div>
-      <DatosGenerales catalogos={catalogos}></DatosGenerales>
->>>>>>> main
-      <DatosPersonales></DatosPersonales>
-      <DatosInformativos></DatosInformativos>
-      <Observaciones></Observaciones>
+      <DatosGenerales catalogos={catalogos}  ></DatosGenerales>
+      <DatosPersonales catalogos={catalogos}  ></DatosPersonales>
+      <PruebasRealizadas catalogos={catalogos}></PruebasRealizadas>
+     
     </div>
   );
 };
 
-<<<<<<< HEAD
-const DatosGenerales = () => {
-=======
 const DatosGenerales = ({catalogos}) => {
->>>>>>> main
-  const dispatch = useDispatch();
-  const config = {
-    defaultExpanded: true,
-  };
-<<<<<<< HEAD
-  const { getCollapseProps, getToggleProps } = useCollapse(config);
-=======
-
-  console.log(catalogos);
->>>>>>> main
-
-
-  const { getCollapseProps, getToggleProps } = useCollapse(config);
-  const detalleReporte = useSelector(({ state }) => state.detalleReporte);
 
   const handleChange = (e) => {
     let data = { [e.target.name]: e.target.value };
     dispatch(changeKeyReportes(data));
   };
+  
+  const dispatch = useDispatch();
+
+  const config = {
+    defaultExpanded: true,
+  };
+
+  const { getCollapseProps, getToggleProps } = useCollapse(config);
+  const detalleReporte = useSelector(({ state }) => state.detalleReporte);
 
   return (
     <div>
@@ -75,55 +59,11 @@ const DatosGenerales = ({catalogos}) => {
             alignSelf: "center",
             display: "flex",
             marginTop: "3%",
-            marginBottom: "3%",
+            marginBottom: "3%"
           }}
         >
-<<<<<<< HEAD
-          <Grid container>
-            <Grid item lg={6} xs={12}>
-              <InputField
-                id="nombre"
-                name="nombre"
-                onChange={handleChange}
-                variant="outlined"
-                label="Nombre"
-                value={detallePelicula?.nombre || ""}
-              ></InputField>
-            </Grid>
-            <Grid item lg={6} xs={12}>
-              <InputField
-                id="genero"
-                name="genero"
-                onChange={handleChange}
-                variant="outlined"
-                label="Genero"
-                value={detallePelicula?.genero || ""}
-              ></InputField>
-            </Grid>
-            <Grid item lg={6} xs={12}>
-              <InputField
-                onInput={(e) => (e.target.value = e.target.value.slice(0, 4))}
-                type="number"
-                id="anio"
-                name="anio"
-                onChange={handleChange}
-                variant="outlined"
-                label="Año"
-                value={detallePelicula?.anio || ""}
-              ></InputField>
-            </Grid>
-            <Grid item lg={6} xs={12}>
-              <InputField
-                id="autor"
-                name="autor"
-                onChange={handleChange}
-                variant="outlined"
-                label="Autor"
-                value={detallePelicula?.autor || ""}
-              ></InputField>
-=======
           <Grid container style={{ padding: "2%" }} spacing={3}>
-            <Grid item xs={12}>
+            <Grid item xs={4} >
               <InputField
                 id="responsable"
                 name="responsable"
@@ -135,27 +75,25 @@ const DatosGenerales = ({catalogos}) => {
             </Grid>
             <Grid item lg={4} xs={12}>
               <SelectField
-                name="id_alta_verapaz"
-                id= "id_alta_verapaz"
-                valueKey="id_alta_verapaz"
-                opciones={catalogos?.AltaVerapaz || ""}
-              ></SelectField>
-                          <SelectField
-                name="id_alta_verapaz"
-                id= "id_alta_verapaz"
-                valueKey="id_alta_verapaz"
-                opciones={catalogos?.BajaVerapaz || ""}
+                id="tipo_cargo"
+                name="tipo_cargo"
+                onChange={handleChange}
+                variant="outlined"
+                label="Tipo Cargo"
+                opciones={catalogos?.tipo_cargo || ""}
+                value={detalleReporte?.tipo_cargo || ""}
               ></SelectField>
             </Grid>
             <Grid item lg={4} xs={12}>
-              <InputField
+            <SelectField
                 id="tipo_servicio"
                 name="tipo_servicio"
                 onChange={handleChange}
                 variant="outlined"
-                label="Tipo de servicio"
+                label="Tipo Servicio"
+                opciones={catalogos?.tipo_servicio || ""}
                 value={detalleReporte?.tipo_servicio || ""}
-              ></InputField>
+              ></SelectField>
             </Grid>
             <Grid item lg={4} xs={12}>
               <InputField
@@ -175,7 +113,6 @@ const DatosGenerales = ({catalogos}) => {
                 label="Fecha de hoja"
                 value={detalleReporte?.date || ""}
               ></DateTimePicker>
->>>>>>> main
             </Grid>
           </Grid>
         </Paper>
@@ -184,23 +121,21 @@ const DatosGenerales = ({catalogos}) => {
   );
 };
 
-const DatosPersonales = () => {
-  const dispatch = useDispatch();
-  const config = {
-    defaultExpanded: true,
-  };
-  const { getCollapseProps, getToggleProps } = useCollapse(config);
-
-<<<<<<< HEAD
-  const detallePelicula = useSelector(({ state }) => state.detallePeliculas);
-=======
-  const detalleReporte = useSelector(({ state }) => state.detalleReporte);
->>>>>>> main
+const DatosPersonales = ({catalogos}) => {
 
   const handleChange = (e) => {
     let data = { [e.target.name]: e.target.value };
     dispatch(changeKeyReportes(data));
   };
+  
+  const dispatch = useDispatch();
+
+  const config = {
+    defaultExpanded: true,
+  };
+
+  const { getCollapseProps, getToggleProps } = useCollapse(config);
+  const detalleReporte = useSelector(({ state }) => state.detalleReporte);
 
   return (
     <div>
@@ -218,64 +153,148 @@ const DatosPersonales = () => {
             marginBottom: "3%",
           }}
         >
-          <Grid container>
-            <Grid item lg={6} xs={12}>
+          <Grid container style={{ padding: "2%" }} spacing={3}>
+            <Grid item lg={4} xs={12}>
               <InputField
-                id="nombre"
-                name="nombre"
+                id="no_orden"
+                name="no_orden"
                 onChange={handleChange}
                 variant="outlined"
-                label="Nombre"
-<<<<<<< HEAD
-                value={detallePelicula?.nombre || ""}
-=======
-                value={detalleReporte?.nombre || ""}
->>>>>>> main
+                label="No. Orden"
+                value={detalleReporte?.no_orden || ""}
               ></InputField>
             </Grid>
-            <Grid item lg={6} xs={12}>
+            <Grid item lg={4} xs={12}>
               <InputField
-                id="genero"
-                name="genero"
+                id="dia_consulta"
+                name="dia_consulta"
                 onChange={handleChange}
                 variant="outlined"
-                label="Genero"
-<<<<<<< HEAD
-                value={detallePelicula?.genero || ""}
-=======
-                value={detalleReporte?.genero || ""}
->>>>>>> main
+                label="Día Consulta"
+                value={detalleReporte?.dia_consulta || ""}
               ></InputField>
             </Grid>
-            <Grid item lg={6} xs={12}>
+            <Grid item lg={4} xs={12}>
+            <InputField
+                id="primer_nombre"
+                name="primer_nombre"
+                onChange={handleChange}
+                variant="outlined"
+                label="Primer Nombre"
+                value={detalleReporte?.primer_nombre || ""}
+              ></InputField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
               <InputField
-                onInput={(e) => (e.target.value = e.target.value.slice(0, 4))}
+                id="segundo_nombre"
+                name="segundo_nombre"
+                onChange={handleChange}
+                variant="outlined"
+                label="Segundo Nombre"
+                value={detalleReporte?.segundo_nombre || ""}
+              ></InputField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+              <InputField
+                id="primer_apellido"
+                name="primer_apellido"
+                onChange={handleChange}
+                variant="outlined"
+                label="Primer Apellido"
+                value={detalleReporte?.primer_apellido || ""}
+              ></InputField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+              <InputField
+                id="segundo_apellido"
+                name="segundo_apellido"
+                onChange={handleChange}
+                variant="outlined"
+                label="Segundo Apellido"
+                value={detalleReporte?.segundo_apellido || ""}
+              ></InputField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+              <InputField
+                id="cui"
+                name="cui"
                 type="number"
-                id="anio"
-                name="anio"
                 onChange={handleChange}
                 variant="outlined"
-                label="Año"
-<<<<<<< HEAD
-                value={detallePelicula?.anio || ""}
-=======
-                value={detalleReporte?.anio || ""}
->>>>>>> main
+                label="CUI"
+                value={detalleReporte?.cui || ""}
               ></InputField>
             </Grid>
-            <Grid item lg={6} xs={12}>
-              <InputField
-                id="autor"
-                name="autor"
+            <Grid item lg={4} xs={12}>
+            <SelectField
+                id="nacionalidad"
+                name="nacionalidad"
                 onChange={handleChange}
                 variant="outlined"
-                label="Autor"
-<<<<<<< HEAD
-                value={detallePelicula?.autor || ""}
-=======
-                value={detalleReporte?.autor || ""}
->>>>>>> main
+                label="Nacionalidad"
+                opciones={catalogos?.nacionalidad || ""}
+                value={detalleReporte?.nacionalidad || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+              <InputField
+                id="departamento_nac"
+                name="departamento_nac"
+                onChange={handleChange}
+                variant="outlined"
+                label="Departamento Nacimiento"
+                value={detalleReporte?.departamento_nac || ""}
               ></InputField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+              <InputField
+                id="municipio_nac"
+                name="municipio_nac"
+                onChange={handleChange}
+                variant="outlined"
+                label="Municipio Nacimiento"
+                value={detalleReporte?.municipio_nac || ""}
+              ></InputField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+              <InputField
+                id="municipio_nac"
+                name="municipio_nac"
+                onChange={handleChange}
+                variant="outlined"
+                label="Municipio Nacimiento"
+                value={detalleReporte?.municipio_nac || ""}
+              ></InputField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+              <DateTimePicker
+                id="fecha_nac"
+                name="fecha_nac"
+                onChange={handleChange}
+                label="Fecha Nacimiento"
+                value={detalleReporte?.fecha_nac || ""}
+              ></DateTimePicker>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+              <InputField
+                id="lugar_poblado"
+                name="lugar_poblado"
+                onChange={handleChange}
+                variant="outlined"
+                label="Lugar Poblado"
+                value={detalleReporte?.lugar_poblado || ""}
+              ></InputField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+            <SelectField
+                id="sexo"
+                name="sexo"
+                onChange={handleChange}
+                variant="outlined"
+                label="Sexo"
+                opciones={catalogos?.sexo || ""}
+                value={detalleReporte?.sexo || ""}
+              ></SelectField>
             </Grid>
           </Grid>
         </Paper>
@@ -284,18 +303,14 @@ const DatosPersonales = () => {
   );
 };
 
-const DatosInformativos = () => {
+const PruebasRealizadas = ({catalogos}) => {
   const dispatch = useDispatch();
   const config = {
     defaultExpanded: true,
   };
   const { getCollapseProps, getToggleProps } = useCollapse(config);
 
-<<<<<<< HEAD
-  const detallePelicula = useSelector(({ state }) => state.detallePeliculas);
-=======
   const detalleReporte = useSelector(({ state }) => state.detalleReporte);
->>>>>>> main
 
   const handleChange = (e) => {
     let data = { [e.target.name]: e.target.value };
@@ -318,63 +333,213 @@ const DatosInformativos = () => {
             marginBottom: "3%",
           }}
         >
-          <Grid container>
-            <Grid item lg={6} xs={12}>
-              <InputField
-                id="nombre"
-                name="nombre"
+          <Grid container style={{ padding: "2%" }} spacing={3}>
+          <Grid item lg={4} xs={12}>
+            <SelectField
+                id="orientacion_sexual"
+                name="orientacion_sexual"
                 onChange={handleChange}
                 variant="outlined"
-                label="Nombre"
-<<<<<<< HEAD
-                value={detallePelicula?.nombre || ""}
-=======
-                value={detalleReporte?.nombre || ""}
->>>>>>> main
-              ></InputField>
+                label="Orientación Sexual"
+                opciones={catalogos?.orientacion_sexual || ""}
+                value={detalleReporte?.orientacion_sexual || ""}
+              ></SelectField>
             </Grid>
-            <Grid item lg={6} xs={12}>
-              <InputField
-                id="genero"
-                name="genero"
+            <Grid item lg={4} xs={12}>
+            <SelectField
+                id="identidad_genero"
+                name="identidad_genero"
                 onChange={handleChange}
                 variant="outlined"
-                label="Genero"
-<<<<<<< HEAD
-                value={detallePelicula?.genero || ""}
-=======
-                value={detalleReporte?.genero || ""}
->>>>>>> main
-              ></InputField>
+                label="Identidad Género"
+                opciones={catalogos?.identidad_genero || ""}
+                value={detalleReporte?.identidad_genero || ""}
+              ></SelectField>
             </Grid>
-            <Grid item lg={6} xs={12}>
-              <InputField
-                onInput={(e) => (e.target.value = e.target.value.slice(0, 4))}
+            <Grid item lg={4} xs={12}>
+            <SelectField
+                id="estado_civil"
+                name="estado_civil"
+                onChange={handleChange}
+                variant="outlined"
+                label="Estado Civil"
+                opciones={catalogos?.estado_civil || ""}
+                value={detalleReporte?.estado_civil || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+            <SelectField
+                id="escolaridad"
+                name="escolaridad"
+                onChange={handleChange}
+                variant="outlined"
+                label="Escolaridad"
+                opciones={catalogos?.escolaridad || ""}
+                value={detalleReporte?.escolaridad || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+            <SelectField
+                id="pueblo"
+                name="pueblo"
+                onChange={handleChange}
+                variant="outlined"
+                label="Pueblo"
+                opciones={catalogos?.pueblo || ""}
+                value={detalleReporte?.pueblo || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+            <SelectField
+                id="comunidad_len"
+                name="comunidad_len"
+                onChange={handleChange}
+                variant="outlined"
+                label="Comunidad Lingüística"
+                opciones={catalogos?.comunidad_len || ""}
+                value={detalleReporte?.comunidad_len || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+            <SelectField
+                id="condicion_riesgo"
+                name="condicion_riesgo"
+                onChange={handleChange}
+                variant="outlined"
+                label="Condición de Riesgo"
+                opciones={catalogos?.condicion_riesgo || ""}
+                value={detalleReporte?.condicion_riesgo || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+            <SelectField
+                id="motivo_orientacion"
+                name="motivo_orientacion"
+                onChange={handleChange}
+                variant="outlined"
+                label="Motivo Orientación"
+                opciones={catalogos?.motivo_orientacion || ""}
+                value={detalleReporte?.motivo_orientacion || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+            <SelectField
+                id="control_prenatal"
+                name="control_prenatal"
+                onChange={handleChange}
+                variant="outlined"
+                label="Control Prenatal"
+                opciones={catalogos?.control_prenatal || ""}
+                value={detalleReporte?.control_prenatal || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+            <InputField
+                id="semana_gestacion"
+                name="semana_gestacion"
                 type="number"
-                id="anio"
-                name="anio"
                 onChange={handleChange}
                 variant="outlined"
-                label="Año"
-<<<<<<< HEAD
-                value={detallePelicula?.anio || ""}
-=======
-                value={detalleReporte?.anio || ""}
->>>>>>> main
+                label="Semana de Gestación"
+                value={detalleReporte?.semana_gestacion || ""}
               ></InputField>
             </Grid>
-            <Grid item lg={6} xs={12}>
-              <InputField
-                id="autor"
-                name="autor"
+            <Grid item lg={4} xs={12}>
+            <SelectField
+                id="orientacion_preprueba"
+                name="orientacion_preprueba"
                 onChange={handleChange}
                 variant="outlined"
-                label="Autor"
-<<<<<<< HEAD
-                value={detallePelicula?.autor || ""}
-=======
-                value={detalleReporte?.autor || ""}
->>>>>>> main
+                label="Orientación Preprueba"
+                opciones={catalogos?.orientacion_preprueba || ""}
+                value={detalleReporte?.orientacion_preprueba || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+            <SelectField
+                id="resultados_tamizaje"
+                name="resultados_tamizaje"
+                onChange={handleChange}
+                variant="outlined"
+                label="Resultados Tamizaje"
+                opciones={catalogos?.resultados_tamizaje || ""}
+                value={detalleReporte?.resultados_tamizaje || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+            <SelectField
+                id="resultados_prueba_vih"
+                name="resultados_prueba_vih"
+                onChange={handleChange}
+                variant="outlined"
+                label="Resultados Prueba VIH"
+                opciones={catalogos?.resultados_prueba_vih || ""}
+                value={detalleReporte?.resultados_prueba_vih || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+            <SelectField
+                id="prueba_treponemica"
+                name="prueba_treponemica"
+                onChange={handleChange}
+                variant="outlined"
+                label="Prueba Treponémica"
+                opciones={catalogos?.prueba_treponemica || ""}
+                value={detalleReporte?.prueba_treponemica || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+            <SelectField
+                id="prueba_no_treponemica"
+                name="prueba_no_treponemica"
+                onChange={handleChange}
+                variant="outlined"
+                label="Resultados No. Treponémica"
+                opciones={catalogos?.prueba_no_treponemica || ""}
+                value={detalleReporte?.prueba_no_treponemica || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+            <SelectField
+                id="resultado_difucion"
+                name="resultado_difucion"
+                onChange={handleChange}
+                variant="outlined"
+                label="Resultados Difución"
+                opciones={catalogos?.resultado_difucion || ""}
+                value={detalleReporte?.resultado_difucion || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+            <SelectField
+                id="referencia"
+                name="referencia"
+                onChange={handleChange}
+                variant="outlined"
+                label="Referencia"
+                opciones={catalogos?.referencia || ""}
+                value={detalleReporte?.referencia || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+            <SelectField
+                id="uai_ref"
+                name="uai_ref"
+                onChange={handleChange}
+                variant="outlined"
+                label="UAI a la que se refirió"
+                opciones={catalogos?.uai_ref || ""}
+                value={detalleReporte?.uai_ref || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} xs={12}>
+            <InputField
+                id="observaciones"
+                name="observaciones"
+                onChange={handleChange}
+                variant="outlined"
+                label="Observaciones"
+                value={detalleReporte?.observaciones || ""}
               ></InputField>
             </Grid>
           </Grid>
@@ -384,104 +549,5 @@ const DatosInformativos = () => {
   );
 };
 
-const Observaciones = () => {
-  const dispatch = useDispatch();
-  const config = {
-    defaultExpanded: true,
-  };
-  const { getCollapseProps, getToggleProps } = useCollapse(config);
-
-<<<<<<< HEAD
-  const detallePelicula = useSelector(({ state }) => state.detallePeliculas);
-=======
-  const detalleReporte = useSelector(({ state }) => state.detalleReporte);
->>>>>>> main
-
-  const handleChange = (e) => {
-    let data = { [e.target.name]: e.target.value };
-    dispatch(changeKeyReportes(data));
-  };
-
-  return (
-    <div>
-      <div {...getToggleProps()}>
-        <TextField variant="h6" label="Observaciones:"></TextField>
-      </div>
-
-      <div {...getCollapseProps()}>
-        <Paper
-          style={{
-            justifyContent: "center",
-            alignSelf: "center",
-            display: "flex",
-            marginTop: "3%",
-            marginBottom: "3%",
-          }}
-        >
-          <Grid container>
-            <Grid item lg={6} xs={12}>
-              <InputField
-                id="nombre"
-                name="nombre"
-                onChange={handleChange}
-                variant="outlined"
-                label="Nombre"
-<<<<<<< HEAD
-                value={detallePelicula?.nombre || ""}
-=======
-                value={detalleReporte?.nombre || ""}
->>>>>>> main
-              ></InputField>
-            </Grid>
-            <Grid item lg={6} xs={12}>
-              <InputField
-                id="genero"
-                name="genero"
-                onChange={handleChange}
-                variant="outlined"
-                label="Genero"
-<<<<<<< HEAD
-                value={detallePelicula?.genero || ""}
-=======
-                value={detalleReporte?.genero || ""}
->>>>>>> main
-              ></InputField>
-            </Grid>
-            <Grid item lg={6} xs={12}>
-              <InputField
-                onInput={(e) => (e.target.value = e.target.value.slice(0, 4))}
-                type="number"
-                id="anio"
-                name="anio"
-                onChange={handleChange}
-                variant="outlined"
-                label="Año"
-<<<<<<< HEAD
-                value={detallePelicula?.anio || ""}
-=======
-                value={detalleReporte?.anio || ""}
->>>>>>> main
-              ></InputField>
-            </Grid>
-            <Grid item lg={6} xs={12}>
-              <InputField
-                id="autor"
-                name="autor"
-                onChange={handleChange}
-                variant="outlined"
-                label="Autor"
-<<<<<<< HEAD
-                value={detallePelicula?.autor || ""}
-=======
-                value={detalleReporte?.autor || ""}
->>>>>>> main
-              ></InputField>
-            </Grid>
-          </Grid>
-        </Paper>
-      </div>
-    </div>
-  );
-};
 
 export default Form;

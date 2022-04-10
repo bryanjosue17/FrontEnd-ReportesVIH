@@ -20,19 +20,12 @@ export default function DialogForm({
       <Dialog
         open={open}
         onClose={handleClose}
-<<<<<<< HEAD
-=======
 
->>>>>>> main
         sx={{
           "& .MuiDialog-container": {
             "& .MuiPaper-root": {
               width: "100%",
-<<<<<<< HEAD
-              maxWidth: "800px",
-=======
               maxWidth: "900px",
->>>>>>> main
             },
           },
         }}

@@ -12,7 +12,7 @@ const SelectField = (props) => {
       <InputLabel id={props.id}>{props.label}</InputLabel>
       <Select
         variant={props.variant}
-        labelId={props.labelId}
+       value={props.value}
         id={props.id}
         label={props.label}
         onChange={(event) =>
