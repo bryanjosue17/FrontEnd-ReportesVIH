@@ -37,10 +37,11 @@ const Form = () => {
   const handleSelectChange = (e) => {
     let data = { [e.target.name]: e.target.value };
     dispatch(changeKeyReportes(data));
-    let item = Guatemala[data];
+    let item = Guatemala[e.target.value ];
     setMunis(item);
-  };
+    console.log(munis);
 
+  };
   return (
     <div>
       <Paper
@@ -92,6 +93,8 @@ const Form = () => {
               onChange={handleChange}
               variant="outlined"
               label="No. de hoja"
+              type="number"
+              onInput={(e)=>(e.target.value= e.target.value.slice(0,10))}
               value={detalleReporte?.no_hoja || ""}
             ></InputField>
           </Grid>
@@ -123,6 +126,8 @@ const Form = () => {
               onChange={handleChange}
               variant="outlined"
               label="No. Orden"
+              type="number"
+              onInput={(e)=>(e.target.value= e.target.value.slice(0,10))}
               value={detalleReporte?.no_orden || ""}
             ></InputField>
           </Grid>
@@ -183,6 +188,7 @@ const Form = () => {
               type="number"
               onChange={handleChange}
               variant="outlined"
+              onInput={(e)=>(e.target.value= e.target.value.slice(0,13))}
               label="CUI"
               value={detalleReporte?.cui || ""}
             ></InputField>
@@ -214,13 +220,15 @@ const Form = () => {
           </Grid>
           <Grid item lg={4} xs={12}>
             <SelectField
-              disabled={
-                detalleReporte?.nacionalidad === "guatemalteca" ? false : true
-              }
+            
               id="municipio_nac"
               name="municipio_nac"
               onChange={handleChange}
               variant="outlined"
+              disabled={
+                detalleReporte?.nacionalidad === "guatemalteca" ? false : true
+              }
+              opciones={munis || []}
               label="Municipio Nacimiento"
               value={detalleReporte?.municipio_nac || []}
             ></SelectField>
@@ -321,6 +329,7 @@ const Form = () => {
               label="Pueblo"
               opciones={catalogos?.pueblo || ""}
               value={detalleReporte?.pueblo || ""}
+              
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
@@ -332,6 +341,9 @@ const Form = () => {
               label="Comunidad Lingüística"
               opciones={catalogos?.comunidad_len || ""}
               value={detalleReporte?.comunidad_len || ""}
+              disabled={
+                detalleReporte?.pueblo === "Maya" ? false : true
+              }
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
@@ -365,6 +377,9 @@ const Form = () => {
               label="Control Prenatal"
               opciones={catalogos?.control_prenatal || ""}
               value={detalleReporte?.control_prenatal || ""}
+              disabled={
+                detalleReporte?.motivo_orientacion === "Embarazo"||   detalleReporte?.motivo_orientacion === "Pareja de embarazada"? false : true
+              }
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
@@ -375,7 +390,11 @@ const Form = () => {
               onChange={handleChange}
               variant="outlined"
               label="Semana de Gestación"
+              onInput={(e)=>(e.target.value= e.target.value.slice(0,2))}
               value={detalleReporte?.semana_gestacion || ""}
+              disabled={
+                detalleReporte?.motivo_orientacion === "Embarazo"||   detalleReporte?.motivo_orientacion === "Pareja de embarazada"? false : true
+              }
             ></InputField>
           </Grid>
           <Grid item lg={4} xs={12}>

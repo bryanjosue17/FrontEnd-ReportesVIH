@@ -21,7 +21,7 @@ const reportesReducer = function (state = initialState, { payload, type }) {
     case CREATE_REPORTE: {
       return {
         ...state,
-        peliculas: [...state.reportes, payload],
+        reportes: [...state.reportes, payload],
       };
     }
     case SEARCH_REPORTES:
