@@ -9,6 +9,7 @@ const InputField = (props) => {
         style={{ width: "100%" }}
         id={props.id}
         label={props.label}
+        disabled={props.disabled}
         variant={props.variant}
         value={props.value}
         onChange={(event) =>

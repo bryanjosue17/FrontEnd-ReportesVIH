@@ -5,14 +5,13 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 const SelectField = (props) => {
-
-
   return (
     <FormControl fullWidth>
       <InputLabel id={props.id}>{props.label}</InputLabel>
       <Select
+        disabled={props.disabled}
         variant={props.variant}
-       value={props.value}
+        value={props.value}
         id={props.id}
         label={props.label}
         onChange={(event) =>
