@@ -1,5 +1,7 @@
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import React from "react";
 import ResponsiveAppBar from "../components/AppBar";
+import MyDocument from "../components/Doc";
 import ListReportes from "../components/ListReportes";
 
 const Home = () => {
@@ -18,6 +20,13 @@ const Home = () => {
       <div>
         <ListReportes></ListReportes>
       </div>
+
+      <PDFDownloadLink document={<MyDocument />} fileName={"Holaaa"}>
+        {({ loading }) =>
+          loading ? <button>Holas</button> : <button>JMundos</button>
+        }
+      </PDFDownloadLink>
+
     </div>
   );
 };

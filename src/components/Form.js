@@ -8,6 +8,7 @@ import DateTimePicker from "./DatePicker";
 import SelectField from "./SelectField";
 import { catalogs } from "../const/catalogs";
 import { Guatemala } from "../const/guatemala";
+import _ from "lodash";
 
 const Form = () => {
   const dispatch = useDispatch();
@@ -30,18 +31,20 @@ const Form = () => {
     setDeptos(data);
   }, []);
 
-  const handleChange = (e) => {
-    let data = { [e.target.name]: e.target.value };
-    dispatch(changeKeyReportes(data));
-  };
-  const handleSelectChange = (e) => {
-    let data = { [e.target.name]: e.target.value };
-    dispatch(changeKeyReportes(data));
-    let item = Guatemala[e.target.value ];
-    setMunis(item);
-    console.log(munis);
 
-  };
+
+  
+  const debounceOnChangeSelect = _.debounce((id, value) => {
+    let data = { [id]: value };
+    dispatch(changeKeyReportes(data));
+    let item = Guatemala[value];
+    setMunis(item);
+  }, 200);
+  const debounceOnChange = _.debounce((id, value) => {
+    let data = { [id]: value };
+    dispatch(changeKeyReportes(data));
+  }, 200);
+
   return (
     <div>
       <Paper
@@ -58,53 +61,53 @@ const Form = () => {
             <InputField
               id="responsable"
               name="responsable"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("responsable", e.target.value)}
               variant="outlined"
               label="Responsable"
-              value={detalleReporte?.responsable || ""}
+              defaultValue={detalleReporte?.responsable || ""}
             ></InputField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <SelectField
               id="tipo_cargo"
               name="tipo_cargo"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("tipo_cargo", e.target.value)}
               variant="outlined"
               label="Tipo Cargo"
               opciones={catalogos?.tipo_cargo || []}
-              value={detalleReporte?.tipo_cargo || ""}
+              defaultValue={detalleReporte?.tipo_cargo || ""}
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <SelectField
               id="tipo_servicio"
               name="tipo_servicio"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("tipo_servicio", e.target.value)}
               variant="outlined"
               label="Tipo Servicio"
               opciones={catalogos?.tipo_servicio || []}
-              value={detalleReporte?.tipo_servicio || ""}
+              defaultValue={detalleReporte?.tipo_servicio || ""}
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <InputField
               id="no_hoja"
               name="no_hoja"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("no_hoja", e.target.value)}
               variant="outlined"
               label="No. de hoja"
               type="number"
-              onInput={(e)=>(e.target.value= e.target.value.slice(0,10))}
-              value={detalleReporte?.no_hoja || ""}
+              onInput={(e) => (e.target.value = e.target.value.slice(0, 10))}
+              defaultValue={detalleReporte?.no_hoja || ""}
             ></InputField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <DateTimePicker
               id="date"
               name="date"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("date", e.target.value)}
               label="Fecha de hoja"
-              value={detalleReporte?.date || ""}
+              defaultValue={detalleReporte?.date || ""}
             ></DateTimePicker>
           </Grid>
         </Grid>
@@ -123,62 +126,62 @@ const Form = () => {
             <InputField
               id="no_orden"
               name="no_orden"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("no_orden", e.target.value)}
               variant="outlined"
               label="No. Orden"
               type="number"
-              onInput={(e)=>(e.target.value= e.target.value.slice(0,10))}
-              value={detalleReporte?.no_orden || ""}
+              onInput={(e) => (e.target.value = e.target.value.slice(0, 10))}
+              defaultValue={detalleReporte?.no_orden || ""}
             ></InputField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <InputField
               id="dia_consulta"
               name="dia_consulta"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("dia_consulta", e.target.value)}
               variant="outlined"
               label="Día Consulta"
-              value={detalleReporte?.dia_consulta || ""}
+              defaultValue={detalleReporte?.dia_consulta || ""}
             ></InputField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <InputField
               id="primer_nombre"
               name="primer_nombre"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("primer_nombre", e.target.value)}
               variant="outlined"
               label="Primer Nombre"
-              value={detalleReporte?.primer_nombre || ""}
+              defaultValue={detalleReporte?.primer_nombre || ""}
             ></InputField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <InputField
               id="segundo_nombre"
               name="segundo_nombre"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("segundo_nombre", e.target.value)}
               variant="outlined"
               label="Segundo Nombre"
-              value={detalleReporte?.segundo_nombre || ""}
+              defaultValue={detalleReporte?.segundo_nombre || ""}
             ></InputField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <InputField
               id="primer_apellido"
               name="primer_apellido"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("primer_apellido", e.target.value)}
               variant="outlined"
               label="Primer Apellido"
-              value={detalleReporte?.primer_apellido || ""}
+              defaultValue={detalleReporte?.primer_apellido || ""}
             ></InputField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <InputField
               id="segundo_apellido"
               name="segundo_apellido"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("segundo_apellido", e.target.value)}
               variant="outlined"
               label="Segundo Apellido"
-              value={detalleReporte?.segundo_apellido || ""}
+              defaultValue={detalleReporte?.segundo_apellido || ""}
             ></InputField>
           </Grid>
           <Grid item lg={4} xs={12}>
@@ -186,51 +189,50 @@ const Form = () => {
               id="cui"
               name="cui"
               type="number"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("cui", e.target.value)}
               variant="outlined"
-              onInput={(e)=>(e.target.value= e.target.value.slice(0,13))}
+              onInput={(e) => (e.target.value = e.target.value.slice(0, 13))}
               label="CUI"
-              value={detalleReporte?.cui || ""}
+              defaultValue={detalleReporte?.cui || ""}
             ></InputField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <SelectField
               id="nacionalidad"
               name="nacionalidad"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("nacionalidad", e.target.value)}
               variant="outlined"
               label="Nacionalidad"
               opciones={catalogos?.nacionalidad || []}
-              value={detalleReporte?.nacionalidad || ""}
+              defaultValue={detalleReporte?.nacionalidad || ""}
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <SelectField
               id="departamento_nac"
               name="departamento_nac"
-              onChange={handleSelectChange}
+              onChange={(e)=> debounceOnChangeSelect("segundo_apellido", e.target.value)}
               variant="outlined"
               label="Departamento Nacimiento"
               disabled={
                 detalleReporte?.nacionalidad === "guatemalteca" ? false : true
               }
               opciones={deptos || []}
-              value={detalleReporte?.departamento_nac || ""}
+              defaultValue={detalleReporte?.departamento_nac || ""}
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <SelectField
-            
               id="municipio_nac"
               name="municipio_nac"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("municipio", e.target.value)}
               variant="outlined"
               disabled={
                 detalleReporte?.nacionalidad === "guatemalteca" ? false : true
               }
               opciones={munis || []}
               label="Municipio Nacimiento"
-              value={detalleReporte?.municipio_nac || []}
+              defaultValue={detalleReporte?.municipio_nac || []}
             ></SelectField>
           </Grid>
 
@@ -238,30 +240,30 @@ const Form = () => {
             <DateTimePicker
               id="fecha_nac"
               name="fecha_nac"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("fecha_nac", e.target.value)}
               label="Fecha Nacimiento"
-              value={detalleReporte?.fecha_nac || ""}
+              defaultValue={detalleReporte?.fecha_nac || ""}
             ></DateTimePicker>
           </Grid>
           <Grid item lg={4} xs={12}>
             <InputField
               id="lugar_poblado"
               name="lugar_poblado"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("lugar_poblado", e.target.value)}
               variant="outlined"
               label="Lugar Poblado"
-              value={detalleReporte?.lugar_poblado || ""}
+              defaultValue={detalleReporte?.lugar_poblado || ""}
             ></InputField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <SelectField
               id="sexo"
               name="sexo"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("sexo", e.target.value)}
               variant="outlined"
               label="Sexo"
               opciones={catalogos?.sexo || []}
-              value={detalleReporte?.sexo || ""}
+              defaultValue={detalleReporte?.sexo || ""}
             ></SelectField>
           </Grid>
         </Grid>
@@ -280,105 +282,105 @@ const Form = () => {
             <SelectField
               id="orientacion_sexual"
               name="orientacion_sexual"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("orientacion_sexual", e.target.value)}
               variant="outlined"
               label="Orientación Sexual"
               opciones={catalogos?.orientacion_sexual || ""}
-              value={detalleReporte?.orientacion_sexual || ""}
+              defaultValue={detalleReporte?.orientacion_sexual || ""}
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <SelectField
               id="identidad_genero"
               name="identidad_genero"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("identidad_genero", e.target.value)}
               variant="outlined"
               label="Identidad Género"
               opciones={catalogos?.identidad_genero || ""}
-              value={detalleReporte?.identidad_genero || ""}
+              defaultValue={detalleReporte?.identidad_genero || ""}
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <SelectField
               id="estado_civil"
               name="estado_civil"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("estado_civil", e.target.value)}
               variant="outlined"
               label="Estado Civil"
               opciones={catalogos?.estado_civil || ""}
-              value={detalleReporte?.estado_civil || ""}
+              defaultValue={detalleReporte?.estado_civil || ""}
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <SelectField
               id="escolaridad"
               name="escolaridad"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("escolaridad", e.target.value)}
               variant="outlined"
               label="Escolaridad"
               opciones={catalogos?.escolaridad || ""}
-              value={detalleReporte?.escolaridad || ""}
+              defaultValue={detalleReporte?.escolaridad || ""}
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <SelectField
               id="pueblo"
               name="pueblo"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("pueblo", e.target.value)}
               variant="outlined"
               label="Pueblo"
               opciones={catalogos?.pueblo || ""}
-              value={detalleReporte?.pueblo || ""}
-              
+              defaultValue={detalleReporte?.pueblo || ""}
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <SelectField
               id="comunidad_len"
               name="comunidad_len"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("comunidad_len", e.target.value)}
               variant="outlined"
               label="Comunidad Lingüística"
               opciones={catalogos?.comunidad_len || ""}
-              value={detalleReporte?.comunidad_len || ""}
-              disabled={
-                detalleReporte?.pueblo === "Maya" ? false : true
-              }
+              defaultValue={detalleReporte?.comunidad_len || ""}
+              disabled={detalleReporte?.pueblo === "Maya" ? false : true}
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <SelectField
               id="condicion_riesgo"
               name="condicion_riesgo"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("condicion_riesgo", e.target.value)}
               variant="outlined"
               label="Condición de Riesgo"
               opciones={catalogos?.condicion_riesgo || ""}
-              value={detalleReporte?.condicion_riesgo || ""}
+              defaultValue={detalleReporte?.condicion_riesgo || ""}
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <SelectField
               id="motivo_orientacion"
               name="motivo_orientacion"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("motivo_orientacion", e.target.value)}
               variant="outlined"
               label="Motivo Orientación"
               opciones={catalogos?.motivo_orientacion || ""}
-              value={detalleReporte?.motivo_orientacion || ""}
+              defaultValue={detalleReporte?.motivo_orientacion || ""}
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <SelectField
               id="control_prenatal"
               name="control_prenatal"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("control_prenatal", e.target.value)}
               variant="outlined"
               label="Control Prenatal"
               opciones={catalogos?.control_prenatal || ""}
-              value={detalleReporte?.control_prenatal || ""}
+              defaultValue={detalleReporte?.control_prenatal || ""}
               disabled={
-                detalleReporte?.motivo_orientacion === "Embarazo"||   detalleReporte?.motivo_orientacion === "Pareja de embarazada"? false : true
+                detalleReporte?.motivo_orientacion === "Embarazo" ||
+                detalleReporte?.motivo_orientacion === "Pareja de embarazada"
+                  ? false
+                  : true
               }
             ></SelectField>
           </Grid>
@@ -387,13 +389,16 @@ const Form = () => {
               id="semana_gestacion"
               name="semana_gestacion"
               type="number"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("semana_gestacion", e.target.value)}
               variant="outlined"
               label="Semana de Gestación"
-              onInput={(e)=>(e.target.value= e.target.value.slice(0,2))}
-              value={detalleReporte?.semana_gestacion || ""}
+              onInput={(e) => (e.target.value = e.target.value.slice(0, 2))}
+              defaultValue={detalleReporte?.semana_gestacion || ""}
               disabled={
-                detalleReporte?.motivo_orientacion === "Embarazo"||   detalleReporte?.motivo_orientacion === "Pareja de embarazada"? false : true
+                detalleReporte?.motivo_orientacion === "Embarazo" ||
+                detalleReporte?.motivo_orientacion === "Pareja de embarazada"
+                  ? false
+                  : true
               }
             ></InputField>
           </Grid>
@@ -401,98 +406,98 @@ const Form = () => {
             <SelectField
               id="orientacion_preprueba"
               name="orientacion_preprueba"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("orientacion_preprueba", e.target.value)}
               variant="outlined"
               label="Orientación Preprueba"
               opciones={catalogos?.orientacion_preprueba || ""}
-              value={detalleReporte?.orientacion_preprueba || ""}
+              defaultValue={detalleReporte?.orientacion_preprueba || ""}
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <SelectField
               id="resultados_tamizaje"
               name="resultados_tamizaje"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("resultados_tamizaje", e.target.value)}
               variant="outlined"
               label="Resultados Tamizaje"
               opciones={catalogos?.resultados_tamizaje || ""}
-              value={detalleReporte?.resultados_tamizaje || ""}
+              defaultValue={detalleReporte?.resultados_tamizaje || ""}
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <SelectField
               id="resultados_prueba_vih"
               name="resultados_prueba_vih"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("resultados_prueba_vih", e.target.value)}
               variant="outlined"
               label="Resultados Prueba VIH"
               opciones={catalogos?.resultados_prueba_vih || ""}
-              value={detalleReporte?.resultados_prueba_vih || ""}
+              defaultValue={detalleReporte?.resultados_prueba_vih || ""}
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <SelectField
               id="prueba_treponemica"
               name="prueba_treponemica"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("prueba_treponemica", e.target.value)}
               variant="outlined"
               label="Prueba Treponémica"
               opciones={catalogos?.prueba_treponemica || ""}
-              value={detalleReporte?.prueba_treponemica || ""}
+              defaultValue={detalleReporte?.prueba_treponemica || ""}
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <SelectField
               id="prueba_no_treponemica"
               name="prueba_no_treponemica"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("prueba_no_treponemica", e.target.value)}
               variant="outlined"
               label="Resultados No. Treponémica"
               opciones={catalogos?.prueba_no_treponemica || ""}
-              value={detalleReporte?.prueba_no_treponemica || ""}
+              defaultValue={detalleReporte?.prueba_no_treponemica || ""}
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <SelectField
               id="resultado_difucion"
               name="resultado_difucion"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("resultado_difucion", e.target.value)}
               variant="outlined"
               label="Resultados Difución"
               opciones={catalogos?.resultado_difucion || ""}
-              value={detalleReporte?.resultado_difucion || ""}
+              defaultValue={detalleReporte?.resultado_difucion || ""}
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <SelectField
               id="referencia"
               name="referencia"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("referencia", e.target.value)}
               variant="outlined"
               label="Referencia"
               opciones={catalogos?.referencia || []}
-              value={detalleReporte?.referencia || ""}
+              defaultValue={detalleReporte?.referencia || ""}
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <SelectField
               id="uai_ref"
               name="uai_ref"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("uai_ref", e.target.value)}
               variant="outlined"
               label="UAI a la que se refirió"
               opciones={catalogos?.uai_ref || []}
-              value={detalleReporte?.uai_ref || ""}
+              defaultValue={detalleReporte?.uai_ref || ""}
             ></SelectField>
           </Grid>
           <Grid item lg={4} xs={12}>
             <InputField
               id="observaciones"
               name="observaciones"
-              onChange={handleChange}
+              onChange={(e)=> debounceOnChange("observaciones", e.target.value)}
               variant="outlined"
               label="Observaciones"
-              value={detalleReporte?.observaciones || ""}
+              defaultValue={detalleReporte?.observaciones || ""}
             ></InputField>
           </Grid>
         </Grid>

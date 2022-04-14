@@ -11,7 +11,7 @@ const SelectField = (props) => {
       <Select
         disabled={props.disabled}
         variant={props.variant}
-        value={props.value}
+        defaultValue={props.defaultValue}
         id={props.id}
         label={props.label}
         onChange={(event) =>

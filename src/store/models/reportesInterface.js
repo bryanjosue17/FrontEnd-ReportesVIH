@@ -7,7 +7,7 @@ export const reportesInterface = (data = {}) => {
     tipo_cargo: data?.tipo_cargo || "",
     tipo_servicio: data?.tipo_servicio || "",
     no_hoja: data?.no_hoja || "",
-    date: data?.date || "",
+    date: moment().format("lll") || "",
     no_orden: data?.no_orden || "",
     dia_consulta: data?.dia_consulta || "",
     primer_nombre: data?.primer_nombre || "",
