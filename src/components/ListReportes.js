@@ -8,6 +8,7 @@ import {
   cleanReportes,
   createReportes,
   deleteReporte,
+  findReportesByDate,
   retrieveReporte,
   retrieveReportes,
   updateReporte,
@@ -42,13 +43,13 @@ const ListReportes = () => {
   const refreshData = () => {
     dispatch(cleanReportes());
   };
-  const findByDate = () => {
+  const findByDates = () => {
     refreshData();
 
     if (searchReporte.length < 1) {
       dispatch(retrieveReportes());
     } else {
-      dispatch(findByDate(searchReporte));
+      dispatch(findReportesByDate(searchReporte));
     }
   };
 
@@ -564,7 +565,7 @@ const ListReportes = () => {
         <ButtonComponent
           label="Buscar"
           variant="outlined"
-          onClick={findByDate}
+          onClick={findByDates}
         ></ButtonComponent>
       </div>
 

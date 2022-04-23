@@ -118,7 +118,8 @@ export const catalogs = {
     "Uniformado",
     "Trabajo sexual",
     "Clientes de trabajadoras sexuales",
-    "Niño/a en contexto de vulnerabilidad"
+    "Niño/a en contexto de vulnerabilidad",
+    "Otros"
   ],
 
   "motivo_orientacion": [
