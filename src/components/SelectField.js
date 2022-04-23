@@ -21,6 +21,9 @@ const SelectField = (props) => {
           })
         }
       >
+        <MenuItem disabled={props.disabled} value="-1">
+          Sin selección
+        </MenuItem>
         {props.opciones?.length > 0 ? (
           props.opciones.map((item, index) => {
             return (
