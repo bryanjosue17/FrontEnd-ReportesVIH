@@ -1,13 +1,8 @@
-import { PDFDownloadLink } from "@react-pdf/renderer";
 import React from "react";
-import { useSelector } from "react-redux";
 import ResponsiveAppBar from "../components/AppBar";
-import MyDocument from "../components/Doc";
 import ListReportes from "../components/ListReportes";
 
 const Home = () => {
-  const reportes = useSelector(({ state }) => state.reportes);
-
   return (
     <div
       style={{
@@ -23,15 +18,6 @@ const Home = () => {
       <div>
         <ListReportes></ListReportes>
       </div>
-
-      <PDFDownloadLink
-        document={<MyDocument reportes={reportes} />}
-        fileName={"Holaaa"}
-      >
-        {({ loading }) =>
-          loading ? <button>Hola</button> : <button>Mundo</button>
-        }
-      </PDFDownloadLink>
     </div>
   );
 };
