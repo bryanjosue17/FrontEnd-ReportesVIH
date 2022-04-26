@@ -29,7 +29,7 @@ const Home = () => {
         fileName={"Holaaa"}
       >
         {({ loading }) =>
-          loading ? <button>Holas</button> : <button>JMundos</button>
+          loading ? <button>Hola</button> : <button>Mundo</button>
         }
       </PDFDownloadLink>
     </div>
