@@ -4,7 +4,9 @@ import TextField from "@mui/material/TextField";
 const InputField = (props) => {
   return (
     <TextField
+      value={props.value}
       defaultValue={props.defaultValue}
+
       type={props.type}
       onInput={props.onInput}
       style={{ width: "100%" }}

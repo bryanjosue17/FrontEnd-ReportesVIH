@@ -7,7 +7,7 @@ export const reportesInterface = (data = {}) => {
     tipo_cargo: data?.tipo_cargo || null,
     tipo_servicio: data?.tipo_servicio || null,
     no_hoja: data?.no_hoja || null,
-    date: moment().format("lll") || null,
+    date: moment().format("YYYY-MM-DD") || null,
     no_orden: data?.no_orden || null,
     dia_consulta: data?.dia_consulta || null,
     primer_nombre: data?.primer_nombre || null,
@@ -18,7 +18,7 @@ export const reportesInterface = (data = {}) => {
     nacionalidad: data?.nacionalidad || null,
     departamento_nac: data?.departamento_nac || null,
     municipio_nac: data?.municipio_nac || null,
-    fecha_nac: data?.fecha_nac || null,
+    fecha_nac:  moment().format("YYYY-MM-DD")  || null,
     lugar_poblado: data?.lugar_poblado || null,
     sexo: data?.sexo || null,
     orientacion_sexual: data?.orientacion_sexual || null,
@@ -40,6 +40,6 @@ export const reportesInterface = (data = {}) => {
     referencia: data?.referencia || null,
     uai_ref: data?.uai_ref || null,
     observaciones: data?.observaciones || null,
-    datetime: moment().format("lll") || null,
+    datetime: moment().format("YYYY-MM-DD") || null,
   };
 };
