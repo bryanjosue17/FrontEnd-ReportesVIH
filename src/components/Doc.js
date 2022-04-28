@@ -71,23 +71,45 @@ const Doc = ({ reportes }) => {
   return (
     <Document>
       <Page style={styles.body}>
-        <Text style={styles.title}>Hospital Nacional de Jutiapa</Text>
-
         <Image style={styles.image} src={logo} />
+
+        <Text style={styles.title}>Hospital Nacional de Jutiapa</Text>
 
         <Text style={styles.subtitle}>Reporte sobre VIH</Text>
 
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
-          <Text style={styles.text}>Texto 1</Text>
-          <Text style={styles.text}>Texto 2</Text>
-          <Text style={styles.text}>Texto 3</Text>
-        </View>
+        {reportes.map((reporte, index) => {
+          return (
+            <View key={index}>
+              <Text style={styles.title}>
+                -----------------------------------------------------------------
+              </Text>
+
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={styles.text}>Responsable</Text>
+                <Text style={styles.text}>Tipo Cargo</Text>
+                <Text style={styles.text}>Tipo Servicio</Text>
+              </View>
+
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={styles.text}>{reporte.responsable}</Text>
+                <Text style={styles.text}>{reporte.tipo_cargo}</Text>
+                <Text style={styles.text}>{reporte.tipo_servicio}</Text>
+              </View>
+            </View>
+          );
+        })}
       </Page>
     </Document>
   );

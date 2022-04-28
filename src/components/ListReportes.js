@@ -19,11 +19,8 @@ import DialogForm from "./Dialog";
 import { useToasts } from "react-toast-notifications";
 import ButtonComponent from "./Button";
 import InputField from "./InputField";
-import IconButton from "@mui/material/IconButton";
-import SearchIcon from '@mui/icons-material/Search';
-import PrintIcon from '@mui/icons-material/Print';
-import MyDocument from "./Doc";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import SearchIcon from "@mui/icons-material/Search";
+import PrintIcon from "@mui/icons-material/Print";
 
 import { IconButton } from "@mui/material";
 import Doc from "./Doc";
@@ -559,6 +556,7 @@ const ListReportes = () => {
           alignItems: "center",
           justifyContent: "center",
           flexDirection: "row",
+          margin: "3%",
         }}
       >
         <div style={{ width: "50%" }}>
@@ -571,13 +569,27 @@ const ListReportes = () => {
           />
         </div>
 
-        <ButtonComponent
-          label="Buscar"
-          variant="outlined"
+        <IconButton
+          style={{ marginLeft: "1%" }}
           onClick={findByDates}
-        ></ButtonComponent>
-      </div>
+          aria-label="search"
+        >
+          <SearchIcon style={{ color: "blue" }} />
+        </IconButton>
 
+        <PDFDownloadLink
+          document={<Doc reportes={reportes} />}
+          fileName={"ReporteVIH"}
+        >
+          <IconButton
+            style={{ marginLeft: "1%" }}
+            onClick={findByDates}
+            aria-label="print"
+          >
+            <PrintIcon style={{ color: "blue" }} />
+          </IconButton>
+        </PDFDownloadLink>
+      </div>
 
       <Paper
         style={{
