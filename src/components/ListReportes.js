@@ -18,18 +18,18 @@ import AddIcon from "@mui/icons-material/Add";
 import DialogForm from "./Dialog";
 import { useToasts } from "react-toast-notifications";
 import ButtonComponent from "./Button";
-import InputField from "./InputField";
 import SearchIcon from "@mui/icons-material/Search";
 import PrintIcon from "@mui/icons-material/Print";
-
+import moment from "moment";
 import { IconButton } from "@mui/material";
 import Doc from "./Doc";
 import { PDFDownloadLink } from "@react-pdf/renderer";
+import DateTimePicker from "./DatePicker";
 
 const ListReportes = () => {
   const [tipo, setTipo] = React.useState("");
   const [open, setOpen] = React.useState(false);
-  const [searchReporte, setSearchReporte] = useState("");
+  const [searchReporte, setSearchReporte] = useState(moment(new Date().getDate(), "DD/MM/YYYY"));
 
   const dispatch = useDispatch();
   const { addToast } = useToasts();
@@ -52,7 +52,7 @@ const ListReportes = () => {
   const findByDates = () => {
     refreshData();
 
-    if (searchReporte.length < 1) {
+    if (searchReporte === null) {
       dispatch(retrieveReportes());
     } else {
       dispatch(findReportesByDate(searchReporte));
@@ -185,7 +185,11 @@ const ListReportes = () => {
           setOpen(false);
         })
         .catch((e) => {
-          console.log(e);
+          addToast("Ha sucedido un error", {
+            appearance: "error",
+            autoDismiss: true,
+          });
+          setOpen(false);
         });
     }
   };
@@ -560,13 +564,14 @@ const ListReportes = () => {
         }}
       >
         <div style={{ width: "50%" }}>
-          <InputField
-            variant="filled"
-            type="text"
+          <DateTimePicker
+            id="date"
+            name="date"
+            //variant="filled"
+            onChange={onChangeSearchReporte}
             label="Buscar por fecha"
             value={searchReporte}
-            onChange={onChangeSearchReporte}
-          />
+          ></DateTimePicker>
         </div>
 
         <IconButton
