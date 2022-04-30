@@ -15,6 +15,7 @@ const SelectField = (props) => {
         defaultValue={props.defaultValue}
         id={props.id}
         label={props.label}
+        onBlur={props.onBlur}
         onChange={(event) =>
           props.onChange &&
           props.onChange({

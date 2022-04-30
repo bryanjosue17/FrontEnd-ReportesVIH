@@ -32,18 +32,22 @@ const Form = () => {
   }, []);
 
 
-
-  
-  const debounceOnChangeSelect = _.debounce((id, value) => {
-    let data = { [id]: value };
+  const handleInputChange = (e) => {
+    let data = { [e.target.name]: e.target.value };
     dispatch(changeKeyReportes(data));
-    let item = Guatemala[value];
+  };
+  const handleInputSelectChange = (e) => {
+    let data = { [e.target.name]: e.target.value };
+    dispatch(changeKeyReportes(data));
+    let item = Guatemala[data];
     setMunis(item);
-  }, 200);
-  const debounceOnChange = _.debounce((id, value) => {
-    let data = { [id]: value };
-    dispatch(changeKeyReportes(data));
-  }, 200);
+  };
+  
+
+
+  const handleChange = _.debounce(handleInputChange, 200);
+  const handleSelectChange = _.debounce(handleInputSelectChange, 200);
+
 
   return (
     <div>
@@ -61,7 +65,7 @@ const Form = () => {
             <InputField
               id="responsable"
               name="responsable"
-              onChange={(e)=> debounceOnChange("responsable", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Responsable"
               defaultValue={detalleReporte?.responsable || ""}
@@ -71,7 +75,7 @@ const Form = () => {
             <SelectField
               id="tipo_cargo"
               name="tipo_cargo"
-              onChange={(e)=> debounceOnChange("tipo_cargo", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Tipo Cargo"
               opciones={catalogos?.tipo_cargo || []}
@@ -82,7 +86,7 @@ const Form = () => {
             <SelectField
               id="tipo_servicio"
               name="tipo_servicio"
-              onChange={(e)=> debounceOnChange("tipo_servicio", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Tipo Servicio"
               opciones={catalogos?.tipo_servicio || []}
@@ -93,7 +97,8 @@ const Form = () => {
             <InputField
               id="no_hoja"
               name="no_hoja"
-              onChange={(e)=> debounceOnChange("no_hoja", e.target.value)}
+              onBlur={handleChange}
+
               variant="outlined"
               label="No. de hoja"
               type="number"
@@ -105,7 +110,8 @@ const Form = () => {
             <DateTimePicker
               id="date"
               name="date"
-              onChange={(e)=> debounceOnChange("date", e.target.value)}
+              onBlur={handleChange}
+
               label="Fecha de hoja"
               defaultValue={detalleReporte?.date || ""}
             ></DateTimePicker>
@@ -126,7 +132,7 @@ const Form = () => {
             <InputField
               id="no_orden"
               name="no_orden"
-              onChange={(e)=> debounceOnChange("no_orden", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="No. Orden"
               type="number"
@@ -138,7 +144,7 @@ const Form = () => {
             <InputField
               id="dia_consulta"
               name="dia_consulta"
-              onChange={(e)=> debounceOnChange("dia_consulta", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Día Consulta"
               defaultValue={detalleReporte?.dia_consulta || ""}
@@ -148,7 +154,7 @@ const Form = () => {
             <InputField
               id="primer_nombre"
               name="primer_nombre"
-              onChange={(e)=> debounceOnChange("primer_nombre", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Primer Nombre"
               defaultValue={detalleReporte?.primer_nombre || ""}
@@ -158,7 +164,7 @@ const Form = () => {
             <InputField
               id="segundo_nombre"
               name="segundo_nombre"
-              onChange={(e)=> debounceOnChange("segundo_nombre", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Segundo Nombre"
               defaultValue={detalleReporte?.segundo_nombre || ""}
@@ -168,7 +174,7 @@ const Form = () => {
             <InputField
               id="primer_apellido"
               name="primer_apellido"
-              onChange={(e)=> debounceOnChange("primer_apellido", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Primer Apellido"
               defaultValue={detalleReporte?.primer_apellido || ""}
@@ -178,7 +184,7 @@ const Form = () => {
             <InputField
               id="segundo_apellido"
               name="segundo_apellido"
-              onChange={(e)=> debounceOnChange("segundo_apellido", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Segundo Apellido"
               defaultValue={detalleReporte?.segundo_apellido || ""}
@@ -189,7 +195,7 @@ const Form = () => {
               id="cui"
               name="cui"
               type="number"
-              onChange={(e)=> debounceOnChange("cui", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               onInput={(e) => (e.target.value = e.target.value.slice(0, 13))}
               label="CUI"
@@ -200,7 +206,7 @@ const Form = () => {
             <SelectField
               id="nacionalidad"
               name="nacionalidad"
-              onChange={(e)=> debounceOnChange("nacionalidad", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Nacionalidad"
               opciones={catalogos?.nacionalidad || []}
@@ -211,7 +217,7 @@ const Form = () => {
             <SelectField
               id="departamento_nac"
               name="departamento_nac"
-              onChange={(e)=> debounceOnChangeSelect("segundo_apellido", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Departamento Nacimiento"
               disabled={
@@ -225,7 +231,7 @@ const Form = () => {
             <SelectField
               id="municipio_nac"
               name="municipio_nac"
-              onChange={(e)=> debounceOnChange("municipio", e.target.value)}
+              onBlur={handleSelectChange}
               variant="outlined"
               disabled={
                 detalleReporte?.nacionalidad === "guatemalteca" ? false : true
@@ -240,7 +246,7 @@ const Form = () => {
             <DateTimePicker
               id="fecha_nac"
               name="fecha_nac"
-              onChange={(e)=> debounceOnChange("fecha_nac", e.target.value)}
+              onBlur={handleChange}
               label="Fecha Nacimiento"
               defaultValue={detalleReporte?.fecha_nac || ""}
             ></DateTimePicker>
@@ -249,7 +255,7 @@ const Form = () => {
             <InputField
               id="lugar_poblado"
               name="lugar_poblado"
-              onChange={(e)=> debounceOnChange("lugar_poblado", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Lugar Poblado"
               defaultValue={detalleReporte?.lugar_poblado || ""}
@@ -259,7 +265,7 @@ const Form = () => {
             <SelectField
               id="sexo"
               name="sexo"
-              onChange={(e)=> debounceOnChange("sexo", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Sexo"
               opciones={catalogos?.sexo || []}
@@ -282,7 +288,7 @@ const Form = () => {
             <SelectField
               id="orientacion_sexual"
               name="orientacion_sexual"
-              onChange={(e)=> debounceOnChange("orientacion_sexual", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Orientación Sexual"
               opciones={catalogos?.orientacion_sexual || ""}
@@ -293,7 +299,7 @@ const Form = () => {
             <SelectField
               id="identidad_genero"
               name="identidad_genero"
-              onChange={(e)=> debounceOnChange("identidad_genero", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Identidad Género"
               opciones={catalogos?.identidad_genero || ""}
@@ -304,7 +310,7 @@ const Form = () => {
             <SelectField
               id="estado_civil"
               name="estado_civil"
-              onChange={(e)=> debounceOnChange("estado_civil", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Estado Civil"
               opciones={catalogos?.estado_civil || ""}
@@ -315,7 +321,7 @@ const Form = () => {
             <SelectField
               id="escolaridad"
               name="escolaridad"
-              onChange={(e)=> debounceOnChange("escolaridad", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Escolaridad"
               opciones={catalogos?.escolaridad || ""}
@@ -326,7 +332,7 @@ const Form = () => {
             <SelectField
               id="pueblo"
               name="pueblo"
-              onChange={(e)=> debounceOnChange("pueblo", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Pueblo"
               opciones={catalogos?.pueblo || ""}
@@ -337,7 +343,7 @@ const Form = () => {
             <SelectField
               id="comunidad_len"
               name="comunidad_len"
-              onChange={(e)=> debounceOnChange("comunidad_len", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Comunidad Lingüística"
               opciones={catalogos?.comunidad_len || ""}
@@ -349,7 +355,7 @@ const Form = () => {
             <SelectField
               id="condicion_riesgo"
               name="condicion_riesgo"
-              onChange={(e)=> debounceOnChange("condicion_riesgo", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Condición de Riesgo"
               opciones={catalogos?.condicion_riesgo || ""}
@@ -360,7 +366,7 @@ const Form = () => {
             <SelectField
               id="motivo_orientacion"
               name="motivo_orientacion"
-              onChange={(e)=> debounceOnChange("motivo_orientacion", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Motivo Orientación"
               opciones={catalogos?.motivo_orientacion || ""}
@@ -371,7 +377,7 @@ const Form = () => {
             <SelectField
               id="control_prenatal"
               name="control_prenatal"
-              onChange={(e)=> debounceOnChange("control_prenatal", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Control Prenatal"
               opciones={catalogos?.control_prenatal || ""}
@@ -389,7 +395,7 @@ const Form = () => {
               id="semana_gestacion"
               name="semana_gestacion"
               type="number"
-              onChange={(e)=> debounceOnChange("semana_gestacion", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Semana de Gestación"
               onInput={(e) => (e.target.value = e.target.value.slice(0, 2))}
@@ -406,7 +412,7 @@ const Form = () => {
             <SelectField
               id="orientacion_preprueba"
               name="orientacion_preprueba"
-              onChange={(e)=> debounceOnChange("orientacion_preprueba", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Orientación Preprueba"
               opciones={catalogos?.orientacion_preprueba || ""}
@@ -417,7 +423,7 @@ const Form = () => {
             <SelectField
               id="resultados_tamizaje"
               name="resultados_tamizaje"
-              onChange={(e)=> debounceOnChange("resultados_tamizaje", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Resultados Tamizaje"
               opciones={catalogos?.resultados_tamizaje || ""}
@@ -428,7 +434,7 @@ const Form = () => {
             <SelectField
               id="resultados_prueba_vih"
               name="resultados_prueba_vih"
-              onChange={(e)=> debounceOnChange("resultados_prueba_vih", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Resultados Prueba VIH"
               opciones={catalogos?.resultados_prueba_vih || ""}
@@ -439,7 +445,7 @@ const Form = () => {
             <SelectField
               id="prueba_treponemica"
               name="prueba_treponemica"
-              onChange={(e)=> debounceOnChange("prueba_treponemica", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Prueba Treponémica"
               opciones={catalogos?.prueba_treponemica || ""}
@@ -450,7 +456,7 @@ const Form = () => {
             <SelectField
               id="prueba_no_treponemica"
               name="prueba_no_treponemica"
-              onChange={(e)=> debounceOnChange("prueba_no_treponemica", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Resultados No. Treponémica"
               opciones={catalogos?.prueba_no_treponemica || ""}
@@ -461,7 +467,7 @@ const Form = () => {
             <SelectField
               id="resultado_difucion"
               name="resultado_difucion"
-              onChange={(e)=> debounceOnChange("resultado_difucion", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Resultados Difución"
               opciones={catalogos?.resultado_difucion || ""}
@@ -472,7 +478,7 @@ const Form = () => {
             <SelectField
               id="referencia"
               name="referencia"
-              onChange={(e)=> debounceOnChange("referencia", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Referencia"
               opciones={catalogos?.referencia || []}
@@ -483,7 +489,7 @@ const Form = () => {
             <SelectField
               id="uai_ref"
               name="uai_ref"
-              onChange={(e)=> debounceOnChange("uai_ref", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="UAI a la que se refirió"
               opciones={catalogos?.uai_ref || []}
@@ -494,7 +500,7 @@ const Form = () => {
             <InputField
               id="observaciones"
               name="observaciones"
-              onChange={(e)=> debounceOnChange("observaciones", e.target.value)}
+              onBlur={handleChange}
               variant="outlined"
               label="Observaciones"
               defaultValue={detalleReporte?.observaciones || ""}

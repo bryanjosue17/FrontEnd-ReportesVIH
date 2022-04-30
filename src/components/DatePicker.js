@@ -17,6 +17,7 @@ const DateTimePicker = (props) => {
       label={props.label}
       value={props.value}
       defaultValue={props.defaultValue}
+      onBlur={props.onBlur}
       onChange={(date) =>
         props.onChange &&
         props.onChange({

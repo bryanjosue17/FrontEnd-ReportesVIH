@@ -6,7 +6,7 @@ const InputField = (props) => {
     <TextField
       value={props.value}
       defaultValue={props.defaultValue}
-
+      onBlur={props.onBlur}
       type={props.type}
       onInput={props.onInput}
       style={{ width: "100%" }}
