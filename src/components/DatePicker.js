@@ -10,14 +10,19 @@ const DateTimePicker = (props) => {
     <DatePicker
       autoOk
       inputFormat="YYYY-MM-DD"
-      mask={"____-__-__"} 
+      mask={"____-__-__"}
       id={props.id}
       maxDate={today}
       initialFocusedDate={today}
       label={props.label}
       value={props.value}
       defaultValue={props.defaultValue}
-      onBlur={props.onBlur}
+      onBlur={(event) =>
+        props.onBlur &&
+        props.onBlur({
+          target: { value: event.target.value, name: props.name },
+        })
+      }
       onChange={(date) =>
         props.onChange &&
         props.onChange({

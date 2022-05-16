@@ -15,8 +15,12 @@ const SelectField = (props) => {
         defaultValue={props.defaultValue}
         id={props.id}
         label={props.label}
-        onBlur={props.onBlur}
-        onChange={(event) =>
+        onBlur={(event) =>
+          props.onBlur &&
+          props.onBlur({
+            target: { value: event.target.value, name: props.name },
+          })
+        } onChange={(event) =>
           props.onChange &&
           props.onChange({
             target: { value: event.target.value, name: props.name },
