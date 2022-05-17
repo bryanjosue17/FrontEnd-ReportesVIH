@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { memo } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -27,9 +27,7 @@ const SelectField = (props) => {
           })
         }
       >
-        <MenuItem disabled={props.disabled} value="-1">
-          Sin selección
-        </MenuItem>
+
         {props.opciones?.length > 0 ? (
           props.opciones.map((item, index) => {
             return (
@@ -48,4 +46,4 @@ const SelectField = (props) => {
   );
 };
 
-export default SelectField;
+export default memo(SelectField);

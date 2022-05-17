@@ -4,19 +4,10 @@ import Paper from "@mui/material/Paper";
 import { DataGrid } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  cleanDetalleReportes,
   cleanReportes,
-  createReportes,
-  deleteReporte,
   findReportesByDate,
-  retrieveReporte,
   retrieveReportes,
-  updateReporte,
 } from "../store/actions/reportes.actions";
-import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
-import { useToasts } from "react-toast-notifications";
-import ButtonComponent from "./Button";
 import SearchIcon from "@mui/icons-material/Search";
 import PrintIcon from "@mui/icons-material/Print";
 import moment from "moment";
@@ -31,9 +22,7 @@ const ListReportes = () => {
   const [searchReporte, setSearchReporte] = useState(moment(new Date().getDate(), "DD/MM/YYYY"));
 
   const dispatch = useDispatch();
-  const { addToast } = useToasts();
 
-  const detalleReporte = useSelector(({ state }) => state.detalleReporte);
   const reportes = useSelector(({ state }) => state.reportes);
 
   useEffect(() => {
@@ -57,8 +46,6 @@ const ListReportes = () => {
       dispatch(findReportesByDate(searchReporte));
     }
   };
-
-
 
 
   const columns = [
@@ -117,11 +104,11 @@ const ListReportes = () => {
       renderCell: (params) => {
         return (
           <Link
-          to={"/reportes/" + params.row.id_reporte}
-          className="btn btn-warning btn-sm"
-        >
-          Editar
-        </Link>
+            to={"/reportes/" + params.row.id_reporte}
+            className="btn btn-warning btn-sm"
+          >
+            Editar
+          </Link>
         );
       },
       align: "center",
@@ -171,7 +158,6 @@ const ListReportes = () => {
         >
           <IconButton
             style={{ marginLeft: "1%" }}
-            onClick={findByDates}
             aria-label="print"
           >
             <PrintIcon style={{ color: "blue" }} />
@@ -202,13 +188,7 @@ const ListReportes = () => {
           />
         </div>
       </Paper>
-      <div
-        style={{ display: "flex", bottom: 10, right: 10, position: "absolute" }}
-      >
-      
 
-        
-      </div>
     </div>
   );
 };

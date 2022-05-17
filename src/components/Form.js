@@ -2,28 +2,34 @@ import React, { useEffect, useState } from "react";
 import InputField from "./InputField";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import { changeKeyReportes, createReportes, deleteReporte, retrieveReporte, updateReporte } from "../store/actions/reportes.actions";
-import { useDispatch, useSelector } from "react-redux";
+import { createReportes, deleteReporte, updateReporte } from "../store/actions/reportes.actions";
+import { useDispatch } from "react-redux";
 import DateTimePicker from "./DatePicker";
 import SelectField from "./SelectField";
 import { catalogs } from "../const/catalogs";
 import { Guatemala } from "../const/guatemala";
 import useCollapse from 'react-collapsed';
-import _ from "lodash";
 import TextField from "./TextField";
 import { useToasts } from "react-toast-notifications";
 import ReporteDataService from "../services/reportes.service";
+import ButtonComponent from "./Button";
+import moment from "moment";
+import { useHistory } from 'react-router-dom';
 
 
 const Form = (props) => {
+  const history = useHistory();
 
+  const navigateHome = () => {
+    history.push("/inicio");
+  };
   const state = {
     id_reporte: null,
     responsable: null,
     tipo_cargo: null,
     tipo_servicio: null,
     no_hoja: null,
-    date: null,
+    date: moment().format("YYYY-MM-DD"),
     no_orden: null,
     dia_consulta: null,
     primer_nombre: null,
@@ -34,7 +40,7 @@ const Form = (props) => {
     nacionalidad: null,
     departamento_nac: null,
     municipio_nac: null,
-    fecha_nac: null,
+    fecha_nac: moment().format("YYYY-MM-DD"),
     lugar_poblado: null,
     sexo: null,
     orientacion_sexual: null,
@@ -56,7 +62,7 @@ const Form = (props) => {
     referencia: null,
     uai_ref: null,
     observaciones: null,
-    datetime: null,
+    datetime: moment().format("YYYY-MM-DD"),
   };
 
 
@@ -69,113 +75,121 @@ const Form = (props) => {
   const [catalogos, setCatalogos] = useState();
   const [deptos, setDeptos] = useState([]);
   const [munis, setMunis] = useState([]);
+  const [tipo, setTipo] = useState("");
+
   const config = {
     defaultExpanded: true
   };
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setDetalleReporte({ ...detalleReporte, [name]: value });
-  };
-  const handleSelectChange = async (event) => {
-    const { name, value } = event.target;
-    setDetalleReporte({ ...detalleReporte, [name]: value });
-    let data = Guatemala[value];
-    setMunis(data);
+  const handleChange = (e) => {
+    let data = { [e.target.name]: e.target.value };
+    setDetalleReporte({ ...detalleReporte, ...data });
   };
 
+  const handleSelectChange = async (e) => {
+    let data = { [e.target.name]: e.target.value };
+
+    setDetalleReporte({ ...detalleReporte, ...data });
+    let muni = Guatemala[e.target.value];
+    setMunis(muni);
+
+  };
 
 
   const handleCreateOrEdit = () => {
-    const {
-      id_reporte,
-      responsable,
-      tipo_cargo,
-      tipo_servicio,
-      no_hoja,
-      date,
-      no_orden,
-      dia_consulta,
-      primer_nombre,
-      segundo_nombre,
-      primer_apellido,
-      segundo_apellido,
-      cui,
-      nacionalidad,
-      departamento_nac,
-      municipio_nac,
-      fecha_nac,
-      lugar_poblado,
-      sexo,
-      orientacion_sexual,
-      identidad_genero,
-      estado_civil,
-      escolaridad,
-      pueblo,
-      comunidad_len,
-      condicion_riesgo,
-      motivo_orientacion,
-      control_prenatal,
-      semana_gestacion,
-      orientacion_preprueba,
-      resultados_tamizaje,
-      resultados_prueba_vih,
-      prueba_treponemica,
-      prueba_no_treponemica,
-      resultado_difucion,
-      referencia,
-      uai_ref,
-      observaciones,
-      datetime,
-    } = detalleReporte;
 
-    if (id_reporte === null) {
+
+    if (tipo === "Crear") {
       dispatch(
         createReportes(
-          responsable,
-          tipo_cargo,
-          tipo_servicio,
-          no_hoja,
-          date,
-          no_orden,
-          dia_consulta,
-          primer_nombre,
-          segundo_nombre,
-          primer_apellido,
-          segundo_apellido,
-          cui,
-          nacionalidad,
-          departamento_nac,
-          municipio_nac,
-          fecha_nac,
-          lugar_poblado,
-          sexo,
-          orientacion_sexual,
-          identidad_genero,
-          estado_civil,
-          escolaridad,
-          pueblo,
-          comunidad_len,
-          condicion_riesgo,
-          motivo_orientacion,
-          control_prenatal,
-          semana_gestacion,
-          orientacion_preprueba,
-          resultados_tamizaje,
-          resultados_prueba_vih,
-          prueba_treponemica,
-          prueba_no_treponemica,
-          resultado_difucion,
-          referencia,
-          uai_ref,
-          observaciones,
-          datetime
+          detalleReporte.responsable,
+          detalleReporte.tipo_cargo,
+          detalleReporte.tipo_servicio,
+          detalleReporte.no_hoja,
+          detalleReporte.date,
+          detalleReporte.no_orden,
+          detalleReporte.dia_consulta,
+          detalleReporte.primer_nombre,
+          detalleReporte.segundo_nombre,
+          detalleReporte.primer_apellido,
+          detalleReporte.segundo_apellido,
+          detalleReporte.cui,
+          detalleReporte.nacionalidad,
+          detalleReporte.departamento_nac,
+          detalleReporte.municipio_nac,
+          detalleReporte.fecha_nac,
+          detalleReporte.lugar_poblado,
+          detalleReporte.sexo,
+          detalleReporte.orientacion_sexual,
+          detalleReporte.identidad_genero,
+          detalleReporte.estado_civil,
+          detalleReporte.escolaridad,
+          detalleReporte.pueblo,
+          detalleReporte.comunidad_len,
+          detalleReporte.condicion_riesgo,
+          detalleReporte.motivo_orientacion,
+          detalleReporte.control_prenatal,
+          detalleReporte.semana_gestacion,
+          detalleReporte.orientacion_preprueba,
+          detalleReporte.resultados_tamizaje,
+          detalleReporte.resultados_prueba_vih,
+          detalleReporte.prueba_treponemica,
+          detalleReporte.prueba_no_treponemica,
+          detalleReporte.resultado_difucion,
+          detalleReporte.referencia,
+          detalleReporte.uai_ref,
+          detalleReporte.observaciones,
+          detalleReporte.datetime
         )
       )
-        .then(() => {
+        .then((data) => {
+
+          setDetalleReporte({
+            responsable: data.responsable,
+            tipo_cargo: data.tipo_cargo,
+            tipo_servicio: data.tipo_servicio,
+            no_hoja: data.no_hoja,
+            date: data.date,
+            no_orden: data.no_orden,
+            dia_consulta: data.dia_consulta,
+            primer_nombre: data.primer_nombre,
+            segundo_nombre: data.segundo_nombre,
+            primer_apellido: data.primer_apellido,
+            segundo_apellido: data.segundo_apellido,
+            cui: data.cui,
+            nacionalidad: data.nacionalidad,
+            departamento_nac: data.departamento_nac,
+            municipio_nac: data.municipio_nac,
+            fecha_nac: data.fecha_nac,
+            lugar_poblado: data.lugar_poblado,
+            sexo: data.sexo,
+            orientacion_sexual: data.orientacion_sexual,
+            identidad_genero: data.identidad_genero,
+            estado_civil: data.estado_civil,
+            escolaridad: data.escolaridad,
+            pueblo: data.pueblo,
+            comunidad_len: data.comunidad_len,
+            condicion_riesgo: data.condicion_riesgo,
+            motivo_orientacion: data.motivo_orientacion,
+            control_prenatal: data.control_prenatal,
+            semana_gestacion: data.semana_gestacion,
+            orientacion_preprueba: data.orientacion_preprueba,
+            resultados_tamizaje: data.resultados_tamizaje,
+            resultados_prueba_vih: data.resultados_prueba_vih,
+            prueba_treponemica: data.prueba_treponemica,
+            prueba_no_treponemica: data.prueba_no_treponemica,
+            resultado_difucion: data.resultado_difucion,
+            referencia: data.referencia,
+            uai_ref: data.uai_ref,
+            observaciones: data.observaciones,
+            datetime: data.datetime,
+          });
+
+
           addToast("La información se ha insertado correctamente.", {
             appearance: "success",
             autoDismiss: true,
           });
+          navigateHome();
         })
         .catch((e) => {
           addToast("Ha sucedido un error", {
@@ -184,12 +198,13 @@ const Form = (props) => {
           });
         });
     } else {
-      dispatch(updateReporte(id_reporte, detalleReporte))
+      dispatch(updateReporte(detalleReporte.id_reporte, detalleReporte))
         .then(() => {
           addToast("La información se ha actualizado correctamente.", {
             appearance: "info",
             autoDismiss: true,
           });
+          navigateHome();
         })
         .catch((e) => {
           addToast("Ha sucedido un error", {
@@ -214,11 +229,11 @@ const Form = (props) => {
           autoDismiss: true,
         });
       });
-  };  
+  };
 
   const getReporte = async (id) => {
     let response = await ReporteDataService.get(id);
- 
+
     let datos = response.data;
     await handleSelectChange({
       target: {
@@ -231,8 +246,14 @@ const Form = (props) => {
   };
 
   useEffect(() => {
-    getReporte(props.match.params.id);
-
+    const id = props.match.params.id;
+    if (id) {
+      getReporte(id);
+      setTipo("Editar");
+    }
+    else {
+      setTipo("Crear");
+    }
   }, [props.match.params.id]);
 
 
@@ -258,6 +279,13 @@ const Form = (props) => {
       <DatosPersonales catalogos={catalogos} handleSelectChange={handleSelectChange} deptos={deptos} munis={munis} ha detalleReporte={detalleReporte} handleChange={handleChange} config={config}></DatosPersonales>
       <DatosInformativos catalogos={catalogos} detalleReporte={detalleReporte} handleChange={handleChange} config={config}></DatosInformativos>
       <Observaciones detalleReporte={detalleReporte} handleChange={handleChange} config={config}></Observaciones>
+      <div style={{ display: "flex", justifyContent: "flex-end", alignContent: "center", margin: "3%" }}>
+        <ButtonComponent variant="contained" label={tipo === "Editar" ? "Editar" : "Crear"} onClick={handleCreateOrEdit}></ButtonComponent>
+        {tipo === "Editar" ? <ButtonComponent variant="contained" label="Eliminar" onClick={handleDelete} style={{ marginLeft: 30, backgroundColor: "red" }}></ButtonComponent> : <></>}
+      </div>
+
+
+
     </div>
   );
 };
@@ -265,14 +293,12 @@ const Form = (props) => {
 
 const DatosGenerales = ({ catalogos, config, handleChange, detalleReporte }) => {
 
-  console.log("hola",detalleReporte);
-
   const { getCollapseProps, getToggleProps } = useCollapse(config);
 
   return (
     <div>
       <div {...getToggleProps()}>
-        <TextField variant="h6" label="Datos generales:"></TextField>
+        <TextField style={{ fontWeight: "bold" }} variant="h5" label="Datos generales:"></TextField>
       </div>
 
       <div {...getCollapseProps()}>
@@ -294,10 +320,10 @@ const DatosGenerales = ({ catalogos, config, handleChange, detalleReporte }) => 
                 onChange={handleChange}
                 variant="outlined"
                 label="Responsable"
-                value={detalleReporte?.responsable || ""}
+                value={detalleReporte.responsable}
               ></InputField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="tipo_cargo"
                 name="tipo_cargo"
@@ -308,7 +334,7 @@ const DatosGenerales = ({ catalogos, config, handleChange, detalleReporte }) => 
                 value={detalleReporte?.tipo_cargo || ""}
               ></SelectField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="tipo_servicio"
                 name="tipo_servicio"
@@ -319,12 +345,11 @@ const DatosGenerales = ({ catalogos, config, handleChange, detalleReporte }) => 
                 value={detalleReporte?.tipo_servicio || ""}
               ></SelectField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <InputField
                 id="no_hoja"
                 name="no_hoja"
                 onChange={handleChange}
-
                 variant="outlined"
                 label="No. de hoja"
                 type="number"
@@ -332,7 +357,7 @@ const DatosGenerales = ({ catalogos, config, handleChange, detalleReporte }) => 
                 value={detalleReporte?.no_hoja || ""}
               ></InputField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <DateTimePicker
                 id="date"
                 name="date"
@@ -356,7 +381,7 @@ const DatosPersonales = ({ catalogos, deptos, munis, handleSelectChange, config,
   return (
     <div>
       <div {...getToggleProps()}>
-        <TextField variant="h6" label="Datos personales:"></TextField>
+        <TextField style={{ fontWeight: "bold" }} variant="h5" label="Datos personales:"></TextField>
       </div>
 
       <div {...getCollapseProps()}>
@@ -370,7 +395,7 @@ const DatosPersonales = ({ catalogos, deptos, munis, handleSelectChange, config,
           }}
         >
           <Grid container style={{ padding: "2%" }} spacing={3}>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <InputField
                 id="no_orden"
                 name="no_orden"
@@ -382,17 +407,18 @@ const DatosPersonales = ({ catalogos, deptos, munis, handleSelectChange, config,
                 value={detalleReporte?.no_orden || ""}
               ></InputField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <InputField
                 id="dia_consulta"
                 name="dia_consulta"
                 onChange={handleChange}
                 variant="outlined"
                 label="Día Consulta"
+                onInput={(e) => (e.target.value = e.target.value.slice(0, 2))}
                 value={detalleReporte?.dia_consulta || ""}
               ></InputField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <InputField
                 id="primer_nombre"
                 name="primer_nombre"
@@ -402,7 +428,7 @@ const DatosPersonales = ({ catalogos, deptos, munis, handleSelectChange, config,
                 value={detalleReporte?.primer_nombre || ""}
               ></InputField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <InputField
                 id="segundo_nombre"
                 name="segundo_nombre"
@@ -412,7 +438,7 @@ const DatosPersonales = ({ catalogos, deptos, munis, handleSelectChange, config,
                 value={detalleReporte?.segundo_nombre || ""}
               ></InputField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <InputField
                 id="primer_apellido"
                 name="primer_apellido"
@@ -422,7 +448,7 @@ const DatosPersonales = ({ catalogos, deptos, munis, handleSelectChange, config,
                 value={detalleReporte?.primer_apellido || ""}
               ></InputField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <InputField
                 id="segundo_apellido"
                 name="segundo_apellido"
@@ -432,7 +458,7 @@ const DatosPersonales = ({ catalogos, deptos, munis, handleSelectChange, config,
                 value={detalleReporte?.segundo_apellido || ""}
               ></InputField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <InputField
                 id="cui"
                 name="cui"
@@ -444,7 +470,7 @@ const DatosPersonales = ({ catalogos, deptos, munis, handleSelectChange, config,
                 value={detalleReporte?.cui || ""}
               ></InputField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="nacionalidad"
                 name="nacionalidad"
@@ -455,11 +481,11 @@ const DatosPersonales = ({ catalogos, deptos, munis, handleSelectChange, config,
                 value={detalleReporte?.nacionalidad || ""}
               ></SelectField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="departamento_nac"
                 name="departamento_nac"
-                onChange={handleChange}
+                onChange={handleSelectChange}
                 variant="outlined"
                 label="Departamento Nacimiento"
                 disabled={
@@ -469,11 +495,11 @@ const DatosPersonales = ({ catalogos, deptos, munis, handleSelectChange, config,
                 value={detalleReporte?.departamento_nac || ""}
               ></SelectField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="municipio_nac"
                 name="municipio_nac"
-                onChange={handleSelectChange}
+                onChange={handleChange}
                 variant="outlined"
                 disabled={
                   detalleReporte?.nacionalidad === "guatemalteca" ? false : true
@@ -484,7 +510,7 @@ const DatosPersonales = ({ catalogos, deptos, munis, handleSelectChange, config,
               ></SelectField>
             </Grid>
 
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <DateTimePicker
                 id="fecha_nac"
                 name="fecha_nac"
@@ -493,7 +519,7 @@ const DatosPersonales = ({ catalogos, deptos, munis, handleSelectChange, config,
                 value={detalleReporte?.fecha_nac || ""}
               ></DateTimePicker>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <InputField
                 id="lugar_poblado"
                 name="lugar_poblado"
@@ -503,7 +529,7 @@ const DatosPersonales = ({ catalogos, deptos, munis, handleSelectChange, config,
                 value={detalleReporte?.lugar_poblado || ""}
               ></InputField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="sexo"
                 name="sexo"
@@ -528,7 +554,7 @@ const DatosInformativos = ({ config, catalogos, handleChange, detalleReporte }) 
   return (
     <div>
       <div {...getToggleProps()}>
-        <TextField variant="h6" label="Datos generales:"></TextField>
+        <TextField style={{ fontWeight: "bold" }} variant="h5" label="Datos generales:"></TextField>
       </div>
 
       <div {...getCollapseProps()}>
@@ -542,7 +568,7 @@ const DatosInformativos = ({ config, catalogos, handleChange, detalleReporte }) 
           }}
         >
           <Grid container style={{ padding: "2%" }} spacing={3}>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="orientacion_sexual"
                 name="orientacion_sexual"
@@ -553,7 +579,7 @@ const DatosInformativos = ({ config, catalogos, handleChange, detalleReporte }) 
                 value={detalleReporte?.orientacion_sexual || ""}
               ></SelectField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="identidad_genero"
                 name="identidad_genero"
@@ -564,7 +590,7 @@ const DatosInformativos = ({ config, catalogos, handleChange, detalleReporte }) 
                 value={detalleReporte?.identidad_genero || ""}
               ></SelectField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="estado_civil"
                 name="estado_civil"
@@ -575,7 +601,7 @@ const DatosInformativos = ({ config, catalogos, handleChange, detalleReporte }) 
                 value={detalleReporte?.estado_civil || ""}
               ></SelectField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="escolaridad"
                 name="escolaridad"
@@ -586,7 +612,7 @@ const DatosInformativos = ({ config, catalogos, handleChange, detalleReporte }) 
                 value={detalleReporte?.escolaridad || ""}
               ></SelectField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="pueblo"
                 name="pueblo"
@@ -597,7 +623,7 @@ const DatosInformativos = ({ config, catalogos, handleChange, detalleReporte }) 
                 value={detalleReporte?.pueblo || ""}
               ></SelectField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="comunidad_len"
                 name="comunidad_len"
@@ -609,7 +635,7 @@ const DatosInformativos = ({ config, catalogos, handleChange, detalleReporte }) 
                 disabled={detalleReporte?.pueblo === "Maya" ? false : true}
               ></SelectField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="condicion_riesgo"
                 name="condicion_riesgo"
@@ -620,7 +646,7 @@ const DatosInformativos = ({ config, catalogos, handleChange, detalleReporte }) 
                 value={detalleReporte?.condicion_riesgo || ""}
               ></SelectField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="motivo_orientacion"
                 name="motivo_orientacion"
@@ -631,7 +657,7 @@ const DatosInformativos = ({ config, catalogos, handleChange, detalleReporte }) 
                 value={detalleReporte?.motivo_orientacion || ""}
               ></SelectField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="control_prenatal"
                 name="control_prenatal"
@@ -648,7 +674,7 @@ const DatosInformativos = ({ config, catalogos, handleChange, detalleReporte }) 
                 }
               ></SelectField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <InputField
                 id="semana_gestacion"
                 name="semana_gestacion"
@@ -666,7 +692,7 @@ const DatosInformativos = ({ config, catalogos, handleChange, detalleReporte }) 
                 }
               ></InputField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="orientacion_preprueba"
                 name="orientacion_preprueba"
@@ -677,7 +703,7 @@ const DatosInformativos = ({ config, catalogos, handleChange, detalleReporte }) 
                 value={detalleReporte?.orientacion_preprueba || ""}
               ></SelectField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="resultados_tamizaje"
                 name="resultados_tamizaje"
@@ -688,7 +714,7 @@ const DatosInformativos = ({ config, catalogos, handleChange, detalleReporte }) 
                 value={detalleReporte?.resultados_tamizaje || ""}
               ></SelectField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="resultados_prueba_vih"
                 name="resultados_prueba_vih"
@@ -699,7 +725,7 @@ const DatosInformativos = ({ config, catalogos, handleChange, detalleReporte }) 
                 value={detalleReporte?.resultados_prueba_vih || ""}
               ></SelectField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="prueba_treponemica"
                 name="prueba_treponemica"
@@ -710,7 +736,7 @@ const DatosInformativos = ({ config, catalogos, handleChange, detalleReporte }) 
                 value={detalleReporte?.prueba_treponemica || ""}
               ></SelectField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="prueba_no_treponemica"
                 name="prueba_no_treponemica"
@@ -721,7 +747,7 @@ const DatosInformativos = ({ config, catalogos, handleChange, detalleReporte }) 
                 value={detalleReporte?.prueba_no_treponemica || ""}
               ></SelectField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="resultado_difucion"
                 name="resultado_difucion"
@@ -732,7 +758,7 @@ const DatosInformativos = ({ config, catalogos, handleChange, detalleReporte }) 
                 value={detalleReporte?.resultado_difucion || ""}
               ></SelectField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="referencia"
                 name="referencia"
@@ -743,7 +769,7 @@ const DatosInformativos = ({ config, catalogos, handleChange, detalleReporte }) 
                 value={detalleReporte?.referencia || ""}
               ></SelectField>
             </Grid>
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={4} md={6} xs={12}>
               <SelectField
                 id="uai_ref"
                 name="uai_ref"
@@ -770,7 +796,7 @@ const Observaciones = ({ config, handleChange, detalleReporte }) => {
 
     <div>
       <div {...getToggleProps()}>
-        <TextField variant="h6" label="Datos Informativos:"></TextField>
+        <TextField style={{ fontWeight: "bold" }} variant="h5" label="Datos Informativos:"></TextField>
       </div>
 
       <div {...getCollapseProps()}>
@@ -784,7 +810,7 @@ const Observaciones = ({ config, handleChange, detalleReporte }) => {
           }}
         >
           <Grid container style={{ padding: "2%" }} spacing={3}>
-            <Grid item lg={12} xs={12}>
+            <Grid item xs={12}>
               <InputField
                 id="observaciones"
                 name="observaciones"
@@ -802,5 +828,8 @@ const Observaciones = ({ config, handleChange, detalleReporte }) => {
     </div>
   );
 };
+
+
+
 
 export default Form;

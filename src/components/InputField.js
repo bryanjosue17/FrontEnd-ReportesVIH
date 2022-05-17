@@ -31,4 +31,4 @@ const InputField = (props) => {
   );
 };
 
-export default InputField;
+export default React.memo(InputField);

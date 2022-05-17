@@ -39,4 +39,4 @@ const DateTimePicker = (props) => {
   );
 };
 
-export default DateTimePicker;
+export default React.memo(DateTimePicker);
