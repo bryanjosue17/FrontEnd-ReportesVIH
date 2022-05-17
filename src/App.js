@@ -1,19 +1,35 @@
 import React from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
+import Form from "./components/Form";
 import Home from "./screens/Home";
 
 
+function App() {
 
-const App = () => {
   return (
-    <div>
-        <BrowserRouter>
-          <Switch>
-            <Route exact path={["/", "/inicio"]} component={Home} />
-          </Switch>
-        </BrowserRouter>
-    </div>
+    <Router>
+      <nav className="navbar navbar-expand navbar-dark bg-dark">
+        <a  href={"/inicio"} className="navbar-brand" style={{fontWeight: "bold", fontSize: 24}} >
+          Reportes VIH
+        </a>
+        <div className="navbar-nav mr-auto">
+          <li className="nav-item">
+            <Link to={"/reportes"} className="nav-link" style={{fontWeight: "bold", fontSize: 18}} >
+              Agregar
+            </Link>
+          </li>
+        </div>
+      </nav>
+      <div className="container mt-3">
+        <Switch>
+          <Route exact path={["/", "/inicio"]} component={Home} />
+          <Route exact path="/reportes" component={Form} />
+          <Route path="/reportes/:id" component={Form} />
+        </Switch>
+      </div>
+    </Router>
   );
-};
-
+}
 export default App;

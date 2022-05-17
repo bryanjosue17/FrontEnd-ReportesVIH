@@ -4,8 +4,8 @@ import Button from "@mui/material/Button";
 const ButtonComponent = (props) => {
 
   return (
-    <div style={{ margin: "3%" }}>
-      <Button onClick={() => props.onClick()} variant={props.variant}>{props.label}</Button>
+    <div >
+      <Button style={props.style} onClick={() => props.onClick()} variant={props.variant}>{props.label}</Button>
     </div>
   );
 };

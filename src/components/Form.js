@@ -2,26 +2,261 @@ import React, { useEffect, useState } from "react";
 import InputField from "./InputField";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import { changeKeyReportes } from "../store/actions/reportes.actions";
-import { useDispatch, useSelector } from "react-redux";
+import { createReportes, deleteReporte, updateReporte } from "../store/actions/reportes.actions";
+import { useDispatch } from "react-redux";
 import DateTimePicker from "./DatePicker";
 import SelectField from "./SelectField";
 import { catalogs } from "../const/catalogs";
 import { Guatemala } from "../const/guatemala";
-import _ from "lodash";
+import useCollapse from 'react-collapsed';
+import TextField from "./TextField";
+import { useToasts } from "react-toast-notifications";
+import ReporteDataService from "../services/reportes.service";
+import ButtonComponent from "./Button";
+import moment from "moment";
+import { useHistory } from 'react-router-dom';
 
-const Form = () => {
+
+const Form = (props) => {
+  const history = useHistory();
+
+  const navigateHome = () => {
+    history.push("/inicio");
+  };
+  const state = {
+    id_reporte: null,
+    responsable: null,
+    tipo_cargo: null,
+    tipo_servicio: null,
+    no_hoja: null,
+    date: moment().format("YYYY-MM-DD"),
+    no_orden: null,
+    dia_consulta: null,
+    primer_nombre: null,
+    segundo_nombre: null,
+    primer_apellido: null,
+    segundo_apellido: null,
+    cui: null,
+    nacionalidad: null,
+    departamento_nac: null,
+    municipio_nac: null,
+    fecha_nac: moment().format("YYYY-MM-DD"),
+    lugar_poblado: null,
+    sexo: null,
+    orientacion_sexual: null,
+    identidad_genero: null,
+    estado_civil: null,
+    escolaridad: null,
+    pueblo: null,
+    comunidad_len: null,
+    condicion_riesgo: null,
+    motivo_orientacion: null,
+    control_prenatal: null,
+    semana_gestacion: null,
+    orientacion_preprueba: null,
+    resultados_tamizaje: null,
+    resultados_prueba_vih: null,
+    prueba_treponemica: null,
+    prueba_no_treponemica: null,
+    resultado_difucion: null,
+    referencia: null,
+    uai_ref: null,
+    observaciones: null,
+    datetime: moment().format("YYYY-MM-DD"),
+  };
+
+
+
+
   const dispatch = useDispatch();
+  const [detalleReporte, setDetalleReporte] = useState(state);
 
+  const { addToast } = useToasts();
   const [catalogos, setCatalogos] = useState();
   const [deptos, setDeptos] = useState([]);
   const [munis, setMunis] = useState([]);
+  const [tipo, setTipo] = useState("");
 
-  const detalleReporte = useSelector(({ state }) => state.detalleReporte);
+  const config = {
+    defaultExpanded: true
+  };
+  const handleChange = (e) => {
+    let data = { [e.target.name]: e.target.value };
+    setDetalleReporte({ ...detalleReporte, ...data });
+  };
+
+  const handleSelectChange = async (e) => {
+    let data = { [e.target.name]: e.target.value };
+
+    setDetalleReporte({ ...detalleReporte, ...data });
+    let muni = Guatemala[e.target.value];
+    setMunis(muni);
+
+  };
+
+
+  const handleCreateOrEdit = () => {
+
+
+    if (tipo === "Crear") {
+      dispatch(
+        createReportes(
+          detalleReporte.responsable,
+          detalleReporte.tipo_cargo,
+          detalleReporte.tipo_servicio,
+          detalleReporte.no_hoja,
+          detalleReporte.date,
+          detalleReporte.no_orden,
+          detalleReporte.dia_consulta,
+          detalleReporte.primer_nombre,
+          detalleReporte.segundo_nombre,
+          detalleReporte.primer_apellido,
+          detalleReporte.segundo_apellido,
+          detalleReporte.cui,
+          detalleReporte.nacionalidad,
+          detalleReporte.departamento_nac,
+          detalleReporte.municipio_nac,
+          detalleReporte.fecha_nac,
+          detalleReporte.lugar_poblado,
+          detalleReporte.sexo,
+          detalleReporte.orientacion_sexual,
+          detalleReporte.identidad_genero,
+          detalleReporte.estado_civil,
+          detalleReporte.escolaridad,
+          detalleReporte.pueblo,
+          detalleReporte.comunidad_len,
+          detalleReporte.condicion_riesgo,
+          detalleReporte.motivo_orientacion,
+          detalleReporte.control_prenatal,
+          detalleReporte.semana_gestacion,
+          detalleReporte.orientacion_preprueba,
+          detalleReporte.resultados_tamizaje,
+          detalleReporte.resultados_prueba_vih,
+          detalleReporte.prueba_treponemica,
+          detalleReporte.prueba_no_treponemica,
+          detalleReporte.resultado_difucion,
+          detalleReporte.referencia,
+          detalleReporte.uai_ref,
+          detalleReporte.observaciones,
+          detalleReporte.datetime
+        )
+      )
+        .then((data) => {
+
+          setDetalleReporte({
+            responsable: data.responsable,
+            tipo_cargo: data.tipo_cargo,
+            tipo_servicio: data.tipo_servicio,
+            no_hoja: data.no_hoja,
+            date: data.date,
+            no_orden: data.no_orden,
+            dia_consulta: data.dia_consulta,
+            primer_nombre: data.primer_nombre,
+            segundo_nombre: data.segundo_nombre,
+            primer_apellido: data.primer_apellido,
+            segundo_apellido: data.segundo_apellido,
+            cui: data.cui,
+            nacionalidad: data.nacionalidad,
+            departamento_nac: data.departamento_nac,
+            municipio_nac: data.municipio_nac,
+            fecha_nac: data.fecha_nac,
+            lugar_poblado: data.lugar_poblado,
+            sexo: data.sexo,
+            orientacion_sexual: data.orientacion_sexual,
+            identidad_genero: data.identidad_genero,
+            estado_civil: data.estado_civil,
+            escolaridad: data.escolaridad,
+            pueblo: data.pueblo,
+            comunidad_len: data.comunidad_len,
+            condicion_riesgo: data.condicion_riesgo,
+            motivo_orientacion: data.motivo_orientacion,
+            control_prenatal: data.control_prenatal,
+            semana_gestacion: data.semana_gestacion,
+            orientacion_preprueba: data.orientacion_preprueba,
+            resultados_tamizaje: data.resultados_tamizaje,
+            resultados_prueba_vih: data.resultados_prueba_vih,
+            prueba_treponemica: data.prueba_treponemica,
+            prueba_no_treponemica: data.prueba_no_treponemica,
+            resultado_difucion: data.resultado_difucion,
+            referencia: data.referencia,
+            uai_ref: data.uai_ref,
+            observaciones: data.observaciones,
+            datetime: data.datetime,
+          });
+
+
+          addToast("La información se ha insertado correctamente.", {
+            appearance: "success",
+            autoDismiss: true,
+          });
+          navigateHome();
+        })
+        .catch((e) => {
+          addToast("Ha sucedido un error", {
+            appearance: "error",
+            autoDismiss: true,
+          });
+        });
+    } else {
+      dispatch(updateReporte(detalleReporte.id_reporte, detalleReporte))
+        .then(() => {
+          addToast("La información se ha actualizado correctamente.", {
+            appearance: "info",
+            autoDismiss: true,
+          });
+          navigateHome();
+        })
+        .catch((e) => {
+          addToast("Ha sucedido un error", {
+            appearance: "error",
+            autoDismiss: true,
+          });
+        });
+    }
+  };
+
+  const handleDelete = () => {
+    dispatch(deleteReporte(detalleReporte.id_reporte))
+      .then(() => {
+        addToast("La información se ha eliminado correctamente.", {
+          appearance: "error",
+          autoDismiss: true,
+        });
+      })
+      .catch((e) => {
+        addToast("Ha sucedido un error", {
+          appearance: "error",
+          autoDismiss: true,
+        });
+      });
+  };
+
+  const getReporte = async (id) => {
+    let response = await ReporteDataService.get(id);
+
+    let datos = response.data;
+    await handleSelectChange({
+      target: {
+        name: "municipio",
+        value: datos.departamento,
+      },
+    });
+    setDetalleReporte(datos);
+
+  };
 
   useEffect(() => {
-    setCatalogos(catalogs);
-  }, []);
+    const id = props.match.params.id;
+    if (id) {
+      getReporte(id);
+      setTipo("Editar");
+    }
+    else {
+      setTipo("Crear");
+    }
+  }, [props.match.params.id]);
+
+
 
   useEffect(() => {
     let data = [];
@@ -31,479 +266,570 @@ const Form = () => {
     setDeptos(data);
   }, []);
 
+  useEffect(() => {
+    setCatalogos(catalogs);
+  }, []);
 
 
-  
-  const debounceOnChangeSelect = _.debounce((id, value) => {
-    let data = { [id]: value };
-    dispatch(changeKeyReportes(data));
-    let item = Guatemala[value];
-    setMunis(item);
-  }, 200);
-  const debounceOnChange = _.debounce((id, value) => {
-    let data = { [id]: value };
-    dispatch(changeKeyReportes(data));
-  }, 200);
+
 
   return (
     <div>
-      <Paper
-        style={{
-          justifyContent: "center",
-          alignSelf: "center",
-          display: "flex",
-          marginTop: "3%",
-          marginBottom: "3%",
-        }}
-      >
-        <Grid container style={{ padding: "2%" }} spacing={3}>
-          <Grid item xs={12}>
-            <InputField
-              id="responsable"
-              name="responsable"
-              onChange={(e)=> debounceOnChange("responsable", e.target.value)}
-              variant="outlined"
-              label="Responsable"
-              defaultValue={detalleReporte?.responsable || ""}
-            ></InputField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="tipo_cargo"
-              name="tipo_cargo"
-              onChange={(e)=> debounceOnChange("tipo_cargo", e.target.value)}
-              variant="outlined"
-              label="Tipo Cargo"
-              opciones={catalogos?.tipo_cargo || []}
-              defaultValue={detalleReporte?.tipo_cargo || ""}
-            ></SelectField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="tipo_servicio"
-              name="tipo_servicio"
-              onChange={(e)=> debounceOnChange("tipo_servicio", e.target.value)}
-              variant="outlined"
-              label="Tipo Servicio"
-              opciones={catalogos?.tipo_servicio || []}
-              defaultValue={detalleReporte?.tipo_servicio || ""}
-            ></SelectField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <InputField
-              id="no_hoja"
-              name="no_hoja"
-              onChange={(e)=> debounceOnChange("no_hoja", e.target.value)}
-              variant="outlined"
-              label="No. de hoja"
-              type="number"
-              onInput={(e) => (e.target.value = e.target.value.slice(0, 10))}
-              defaultValue={detalleReporte?.no_hoja || ""}
-            ></InputField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <DateTimePicker
-              id="date"
-              name="date"
-              onChange={(e)=> debounceOnChange("date", e.target.value)}
-              label="Fecha de hoja"
-              defaultValue={detalleReporte?.date || ""}
-            ></DateTimePicker>
-          </Grid>
-        </Grid>
-      </Paper>
-      <Paper
-        style={{
-          justifyContent: "center",
-          alignSelf: "center",
-          display: "flex",
-          marginTop: "3%",
-          marginBottom: "3%",
-        }}
-      >
-        <Grid container style={{ padding: "2%" }} spacing={3}>
-          <Grid item lg={4} xs={12}>
-            <InputField
-              id="no_orden"
-              name="no_orden"
-              onChange={(e)=> debounceOnChange("no_orden", e.target.value)}
-              variant="outlined"
-              label="No. Orden"
-              type="number"
-              onInput={(e) => (e.target.value = e.target.value.slice(0, 10))}
-              defaultValue={detalleReporte?.no_orden || ""}
-            ></InputField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <InputField
-              id="dia_consulta"
-              name="dia_consulta"
-              onChange={(e)=> debounceOnChange("dia_consulta", e.target.value)}
-              variant="outlined"
-              label="Día Consulta"
-              defaultValue={detalleReporte?.dia_consulta || ""}
-            ></InputField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <InputField
-              id="primer_nombre"
-              name="primer_nombre"
-              onChange={(e)=> debounceOnChange("primer_nombre", e.target.value)}
-              variant="outlined"
-              label="Primer Nombre"
-              defaultValue={detalleReporte?.primer_nombre || ""}
-            ></InputField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <InputField
-              id="segundo_nombre"
-              name="segundo_nombre"
-              onChange={(e)=> debounceOnChange("segundo_nombre", e.target.value)}
-              variant="outlined"
-              label="Segundo Nombre"
-              defaultValue={detalleReporte?.segundo_nombre || ""}
-            ></InputField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <InputField
-              id="primer_apellido"
-              name="primer_apellido"
-              onChange={(e)=> debounceOnChange("primer_apellido", e.target.value)}
-              variant="outlined"
-              label="Primer Apellido"
-              defaultValue={detalleReporte?.primer_apellido || ""}
-            ></InputField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <InputField
-              id="segundo_apellido"
-              name="segundo_apellido"
-              onChange={(e)=> debounceOnChange("segundo_apellido", e.target.value)}
-              variant="outlined"
-              label="Segundo Apellido"
-              defaultValue={detalleReporte?.segundo_apellido || ""}
-            ></InputField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <InputField
-              id="cui"
-              name="cui"
-              type="number"
-              onChange={(e)=> debounceOnChange("cui", e.target.value)}
-              variant="outlined"
-              onInput={(e) => (e.target.value = e.target.value.slice(0, 13))}
-              label="CUI"
-              defaultValue={detalleReporte?.cui || ""}
-            ></InputField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="nacionalidad"
-              name="nacionalidad"
-              onChange={(e)=> debounceOnChange("nacionalidad", e.target.value)}
-              variant="outlined"
-              label="Nacionalidad"
-              opciones={catalogos?.nacionalidad || []}
-              defaultValue={detalleReporte?.nacionalidad || ""}
-            ></SelectField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="departamento_nac"
-              name="departamento_nac"
-              onChange={(e)=> debounceOnChangeSelect("segundo_apellido", e.target.value)}
-              variant="outlined"
-              label="Departamento Nacimiento"
-              disabled={
-                detalleReporte?.nacionalidad === "guatemalteca" ? false : true
-              }
-              opciones={deptos || []}
-              defaultValue={detalleReporte?.departamento_nac || ""}
-            ></SelectField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="municipio_nac"
-              name="municipio_nac"
-              onChange={(e)=> debounceOnChange("municipio", e.target.value)}
-              variant="outlined"
-              disabled={
-                detalleReporte?.nacionalidad === "guatemalteca" ? false : true
-              }
-              opciones={munis || []}
-              label="Municipio Nacimiento"
-              defaultValue={detalleReporte?.municipio_nac || []}
-            ></SelectField>
-          </Grid>
+      <DatosGenerales catalogos={catalogos} detalleReporte={detalleReporte} handleChange={handleChange} config={config}></DatosGenerales>
+      <DatosPersonales catalogos={catalogos} handleSelectChange={handleSelectChange} deptos={deptos} munis={munis} ha detalleReporte={detalleReporte} handleChange={handleChange} config={config}></DatosPersonales>
+      <DatosInformativos catalogos={catalogos} detalleReporte={detalleReporte} handleChange={handleChange} config={config}></DatosInformativos>
+      <Observaciones detalleReporte={detalleReporte} handleChange={handleChange} config={config}></Observaciones>
+      <div style={{ display: "flex", justifyContent: "flex-end", alignContent: "center", margin: "3%" }}>
+        <ButtonComponent variant="contained" label={tipo === "Editar" ? "Editar" : "Crear"} onClick={handleCreateOrEdit}></ButtonComponent>
+        {tipo === "Editar" ? <ButtonComponent variant="contained" label="Eliminar" onClick={handleDelete} style={{ marginLeft: 30, backgroundColor: "red" }}></ButtonComponent> : <></>}
+      </div>
 
-          <Grid item lg={4} xs={12}>
-            <DateTimePicker
-              id="fecha_nac"
-              name="fecha_nac"
-              onChange={(e)=> debounceOnChange("fecha_nac", e.target.value)}
-              label="Fecha Nacimiento"
-              defaultValue={detalleReporte?.fecha_nac || ""}
-            ></DateTimePicker>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <InputField
-              id="lugar_poblado"
-              name="lugar_poblado"
-              onChange={(e)=> debounceOnChange("lugar_poblado", e.target.value)}
-              variant="outlined"
-              label="Lugar Poblado"
-              defaultValue={detalleReporte?.lugar_poblado || ""}
-            ></InputField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="sexo"
-              name="sexo"
-              onChange={(e)=> debounceOnChange("sexo", e.target.value)}
-              variant="outlined"
-              label="Sexo"
-              opciones={catalogos?.sexo || []}
-              defaultValue={detalleReporte?.sexo || ""}
-            ></SelectField>
-          </Grid>
-        </Grid>
-      </Paper>
-      <Paper
-        style={{
-          justifyContent: "center",
-          alignSelf: "center",
-          display: "flex",
-          marginTop: "3%",
-          marginBottom: "3%",
-        }}
-      >
-        <Grid container style={{ padding: "2%" }} spacing={3}>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="orientacion_sexual"
-              name="orientacion_sexual"
-              onChange={(e)=> debounceOnChange("orientacion_sexual", e.target.value)}
-              variant="outlined"
-              label="Orientación Sexual"
-              opciones={catalogos?.orientacion_sexual || ""}
-              defaultValue={detalleReporte?.orientacion_sexual || ""}
-            ></SelectField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="identidad_genero"
-              name="identidad_genero"
-              onChange={(e)=> debounceOnChange("identidad_genero", e.target.value)}
-              variant="outlined"
-              label="Identidad Género"
-              opciones={catalogos?.identidad_genero || ""}
-              defaultValue={detalleReporte?.identidad_genero || ""}
-            ></SelectField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="estado_civil"
-              name="estado_civil"
-              onChange={(e)=> debounceOnChange("estado_civil", e.target.value)}
-              variant="outlined"
-              label="Estado Civil"
-              opciones={catalogos?.estado_civil || ""}
-              defaultValue={detalleReporte?.estado_civil || ""}
-            ></SelectField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="escolaridad"
-              name="escolaridad"
-              onChange={(e)=> debounceOnChange("escolaridad", e.target.value)}
-              variant="outlined"
-              label="Escolaridad"
-              opciones={catalogos?.escolaridad || ""}
-              defaultValue={detalleReporte?.escolaridad || ""}
-            ></SelectField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="pueblo"
-              name="pueblo"
-              onChange={(e)=> debounceOnChange("pueblo", e.target.value)}
-              variant="outlined"
-              label="Pueblo"
-              opciones={catalogos?.pueblo || ""}
-              defaultValue={detalleReporte?.pueblo || ""}
-            ></SelectField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="comunidad_len"
-              name="comunidad_len"
-              onChange={(e)=> debounceOnChange("comunidad_len", e.target.value)}
-              variant="outlined"
-              label="Comunidad Lingüística"
-              opciones={catalogos?.comunidad_len || ""}
-              defaultValue={detalleReporte?.comunidad_len || ""}
-              disabled={detalleReporte?.pueblo === "Maya" ? false : true}
-            ></SelectField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="condicion_riesgo"
-              name="condicion_riesgo"
-              onChange={(e)=> debounceOnChange("condicion_riesgo", e.target.value)}
-              variant="outlined"
-              label="Condición de Riesgo"
-              opciones={catalogos?.condicion_riesgo || ""}
-              defaultValue={detalleReporte?.condicion_riesgo || ""}
-            ></SelectField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="motivo_orientacion"
-              name="motivo_orientacion"
-              onChange={(e)=> debounceOnChange("motivo_orientacion", e.target.value)}
-              variant="outlined"
-              label="Motivo Orientación"
-              opciones={catalogos?.motivo_orientacion || ""}
-              defaultValue={detalleReporte?.motivo_orientacion || ""}
-            ></SelectField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="control_prenatal"
-              name="control_prenatal"
-              onChange={(e)=> debounceOnChange("control_prenatal", e.target.value)}
-              variant="outlined"
-              label="Control Prenatal"
-              opciones={catalogos?.control_prenatal || ""}
-              defaultValue={detalleReporte?.control_prenatal || ""}
-              disabled={
-                detalleReporte?.motivo_orientacion === "Embarazo" ||
-                detalleReporte?.motivo_orientacion === "Pareja de embarazada"
-                  ? false
-                  : true
-              }
-            ></SelectField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <InputField
-              id="semana_gestacion"
-              name="semana_gestacion"
-              type="number"
-              onChange={(e)=> debounceOnChange("semana_gestacion", e.target.value)}
-              variant="outlined"
-              label="Semana de Gestación"
-              onInput={(e) => (e.target.value = e.target.value.slice(0, 2))}
-              defaultValue={detalleReporte?.semana_gestacion || ""}
-              disabled={
-                detalleReporte?.motivo_orientacion === "Embarazo" ||
-                detalleReporte?.motivo_orientacion === "Pareja de embarazada"
-                  ? false
-                  : true
-              }
-            ></InputField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="orientacion_preprueba"
-              name="orientacion_preprueba"
-              onChange={(e)=> debounceOnChange("orientacion_preprueba", e.target.value)}
-              variant="outlined"
-              label="Orientación Preprueba"
-              opciones={catalogos?.orientacion_preprueba || ""}
-              defaultValue={detalleReporte?.orientacion_preprueba || ""}
-            ></SelectField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="resultados_tamizaje"
-              name="resultados_tamizaje"
-              onChange={(e)=> debounceOnChange("resultados_tamizaje", e.target.value)}
-              variant="outlined"
-              label="Resultados Tamizaje"
-              opciones={catalogos?.resultados_tamizaje || ""}
-              defaultValue={detalleReporte?.resultados_tamizaje || ""}
-            ></SelectField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="resultados_prueba_vih"
-              name="resultados_prueba_vih"
-              onChange={(e)=> debounceOnChange("resultados_prueba_vih", e.target.value)}
-              variant="outlined"
-              label="Resultados Prueba VIH"
-              opciones={catalogos?.resultados_prueba_vih || ""}
-              defaultValue={detalleReporte?.resultados_prueba_vih || ""}
-            ></SelectField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="prueba_treponemica"
-              name="prueba_treponemica"
-              onChange={(e)=> debounceOnChange("prueba_treponemica", e.target.value)}
-              variant="outlined"
-              label="Prueba Treponémica"
-              opciones={catalogos?.prueba_treponemica || ""}
-              defaultValue={detalleReporte?.prueba_treponemica || ""}
-            ></SelectField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="prueba_no_treponemica"
-              name="prueba_no_treponemica"
-              onChange={(e)=> debounceOnChange("prueba_no_treponemica", e.target.value)}
-              variant="outlined"
-              label="Resultados No. Treponémica"
-              opciones={catalogos?.prueba_no_treponemica || ""}
-              defaultValue={detalleReporte?.prueba_no_treponemica || ""}
-            ></SelectField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="resultado_difucion"
-              name="resultado_difucion"
-              onChange={(e)=> debounceOnChange("resultado_difucion", e.target.value)}
-              variant="outlined"
-              label="Resultados Difución"
-              opciones={catalogos?.resultado_difucion || ""}
-              defaultValue={detalleReporte?.resultado_difucion || ""}
-            ></SelectField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="referencia"
-              name="referencia"
-              onChange={(e)=> debounceOnChange("referencia", e.target.value)}
-              variant="outlined"
-              label="Referencia"
-              opciones={catalogos?.referencia || []}
-              defaultValue={detalleReporte?.referencia || ""}
-            ></SelectField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <SelectField
-              id="uai_ref"
-              name="uai_ref"
-              onChange={(e)=> debounceOnChange("uai_ref", e.target.value)}
-              variant="outlined"
-              label="UAI a la que se refirió"
-              opciones={catalogos?.uai_ref || []}
-              defaultValue={detalleReporte?.uai_ref || ""}
-            ></SelectField>
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <InputField
-              id="observaciones"
-              name="observaciones"
-              onChange={(e)=> debounceOnChange("observaciones", e.target.value)}
-              variant="outlined"
-              label="Observaciones"
-              defaultValue={detalleReporte?.observaciones || ""}
-            ></InputField>
-          </Grid>
-        </Grid>
-      </Paper>
+
+
     </div>
   );
 };
+
+
+const DatosGenerales = ({ catalogos, config, handleChange, detalleReporte }) => {
+
+  const { getCollapseProps, getToggleProps } = useCollapse(config);
+
+  return (
+    <div>
+      <div {...getToggleProps()}>
+        <TextField style={{ fontWeight: "bold" }} variant="h5" label="Datos generales:"></TextField>
+      </div>
+
+      <div {...getCollapseProps()}>
+        <Paper
+          style={{
+            justifyContent: "center",
+            alignSelf: "center",
+            display: "flex",
+            marginTop: "3%",
+            marginBottom: "3%",
+          }}
+        >
+
+          <Grid container style={{ padding: "2%" }} spacing={3}>
+            <Grid item xs={12}>
+              <InputField
+                id="responsable"
+                name="responsable"
+                onChange={handleChange}
+                variant="outlined"
+                label="Responsable"
+                value={detalleReporte.responsable}
+              ></InputField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="tipo_cargo"
+                name="tipo_cargo"
+                onChange={handleChange}
+                variant="outlined"
+                label="Tipo Cargo"
+                opciones={catalogos?.tipo_cargo || []}
+                value={detalleReporte?.tipo_cargo || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="tipo_servicio"
+                name="tipo_servicio"
+                onChange={handleChange}
+                variant="outlined"
+                label="Tipo Servicio"
+                opciones={catalogos?.tipo_servicio || []}
+                value={detalleReporte?.tipo_servicio || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <InputField
+                id="no_hoja"
+                name="no_hoja"
+                onChange={handleChange}
+                variant="outlined"
+                label="No. de hoja"
+                type="number"
+                onInput={(e) => (e.target.value = e.target.value.slice(0, 10))}
+                value={detalleReporte?.no_hoja || ""}
+              ></InputField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <DateTimePicker
+                id="date"
+                name="date"
+                onChange={handleChange}
+
+                label="Fecha de hoja"
+                value={detalleReporte?.date || ""}
+              ></DateTimePicker>
+            </Grid>
+          </Grid>
+        </Paper>
+      </div>
+    </div>
+  );
+}
+
+
+const DatosPersonales = ({ catalogos, deptos, munis, handleSelectChange, config, handleChange, detalleReporte }) => {
+  const { getCollapseProps, getToggleProps } = useCollapse(config);
+
+  return (
+    <div>
+      <div {...getToggleProps()}>
+        <TextField style={{ fontWeight: "bold" }} variant="h5" label="Datos personales:"></TextField>
+      </div>
+
+      <div {...getCollapseProps()}>
+        <Paper
+          style={{
+            justifyContent: "center",
+            alignSelf: "center",
+            display: "flex",
+            marginTop: "3%",
+            marginBottom: "3%",
+          }}
+        >
+          <Grid container style={{ padding: "2%" }} spacing={3}>
+            <Grid item lg={4} md={6} xs={12}>
+              <InputField
+                id="no_orden"
+                name="no_orden"
+                onChange={handleChange}
+                variant="outlined"
+                label="No. Orden"
+                type="number"
+                onInput={(e) => (e.target.value = e.target.value.slice(0, 10))}
+                value={detalleReporte?.no_orden || ""}
+              ></InputField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <InputField
+                id="dia_consulta"
+                name="dia_consulta"
+                onChange={handleChange}
+                variant="outlined"
+                label="Día Consulta"
+                onInput={(e) => (e.target.value = e.target.value.slice(0, 2))}
+                value={detalleReporte?.dia_consulta || ""}
+              ></InputField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <InputField
+                id="primer_nombre"
+                name="primer_nombre"
+                onChange={handleChange}
+                variant="outlined"
+                label="Primer Nombre"
+                value={detalleReporte?.primer_nombre || ""}
+              ></InputField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <InputField
+                id="segundo_nombre"
+                name="segundo_nombre"
+                onChange={handleChange}
+                variant="outlined"
+                label="Segundo Nombre"
+                value={detalleReporte?.segundo_nombre || ""}
+              ></InputField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <InputField
+                id="primer_apellido"
+                name="primer_apellido"
+                onChange={handleChange}
+                variant="outlined"
+                label="Primer Apellido"
+                value={detalleReporte?.primer_apellido || ""}
+              ></InputField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <InputField
+                id="segundo_apellido"
+                name="segundo_apellido"
+                onChange={handleChange}
+                variant="outlined"
+                label="Segundo Apellido"
+                value={detalleReporte?.segundo_apellido || ""}
+              ></InputField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <InputField
+                id="cui"
+                name="cui"
+                type="number"
+                onChange={handleChange}
+                variant="outlined"
+                onInput={(e) => (e.target.value = e.target.value.slice(0, 13))}
+                label="CUI"
+                value={detalleReporte?.cui || ""}
+              ></InputField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="nacionalidad"
+                name="nacionalidad"
+                onChange={handleChange}
+                variant="outlined"
+                label="Nacionalidad"
+                opciones={catalogos?.nacionalidad || []}
+                value={detalleReporte?.nacionalidad || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="departamento_nac"
+                name="departamento_nac"
+                onChange={handleSelectChange}
+                variant="outlined"
+                label="Departamento Nacimiento"
+                disabled={
+                  detalleReporte?.nacionalidad === "guatemalteca" ? false : true
+                }
+                opciones={deptos || []}
+                value={detalleReporte?.departamento_nac || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="municipio_nac"
+                name="municipio_nac"
+                onChange={handleChange}
+                variant="outlined"
+                disabled={
+                  detalleReporte?.nacionalidad === "guatemalteca" ? false : true
+                }
+                opciones={munis || []}
+                label="Municipio Nacimiento"
+                value={detalleReporte?.municipio_nac || []}
+              ></SelectField>
+            </Grid>
+
+            <Grid item lg={4} md={6} xs={12}>
+              <DateTimePicker
+                id="fecha_nac"
+                name="fecha_nac"
+                onChange={handleChange}
+                label="Fecha Nacimiento"
+                value={detalleReporte?.fecha_nac || ""}
+              ></DateTimePicker>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <InputField
+                id="lugar_poblado"
+                name="lugar_poblado"
+                onChange={handleChange}
+                variant="outlined"
+                label="Lugar Poblado"
+                value={detalleReporte?.lugar_poblado || ""}
+              ></InputField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="sexo"
+                name="sexo"
+                onChange={handleChange}
+                variant="outlined"
+                label="Sexo"
+                opciones={catalogos?.sexo || []}
+                value={detalleReporte?.sexo || ""}
+              ></SelectField>
+            </Grid>
+          </Grid>
+        </Paper>
+      </div>
+    </div>
+  );
+};
+
+const DatosInformativos = ({ config, catalogos, handleChange, detalleReporte }) => {
+
+  const { getCollapseProps, getToggleProps } = useCollapse(config);
+
+  return (
+    <div>
+      <div {...getToggleProps()}>
+        <TextField style={{ fontWeight: "bold" }} variant="h5" label="Datos generales:"></TextField>
+      </div>
+
+      <div {...getCollapseProps()}>
+        <Paper
+          style={{
+            justifyContent: "center",
+            alignSelf: "center",
+            display: "flex",
+            marginTop: "3%",
+            marginBottom: "3%",
+          }}
+        >
+          <Grid container style={{ padding: "2%" }} spacing={3}>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="orientacion_sexual"
+                name="orientacion_sexual"
+                onChange={handleChange}
+                variant="outlined"
+                label="Orientación Sexual"
+                opciones={catalogos?.orientacion_sexual || ""}
+                value={detalleReporte?.orientacion_sexual || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="identidad_genero"
+                name="identidad_genero"
+                onChange={handleChange}
+                variant="outlined"
+                label="Identidad Género"
+                opciones={catalogos?.identidad_genero || ""}
+                value={detalleReporte?.identidad_genero || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="estado_civil"
+                name="estado_civil"
+                onChange={handleChange}
+                variant="outlined"
+                label="Estado Civil"
+                opciones={catalogos?.estado_civil || ""}
+                value={detalleReporte?.estado_civil || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="escolaridad"
+                name="escolaridad"
+                onChange={handleChange}
+                variant="outlined"
+                label="Escolaridad"
+                opciones={catalogos?.escolaridad || ""}
+                value={detalleReporte?.escolaridad || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="pueblo"
+                name="pueblo"
+                onChange={handleChange}
+                variant="outlined"
+                label="Pueblo"
+                opciones={catalogos?.pueblo || ""}
+                value={detalleReporte?.pueblo || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="comunidad_len"
+                name="comunidad_len"
+                onChange={handleChange}
+                variant="outlined"
+                label="Comunidad Lingüística"
+                opciones={catalogos?.comunidad_len || ""}
+                value={detalleReporte?.comunidad_len || ""}
+                disabled={detalleReporte?.pueblo === "Maya" ? false : true}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="condicion_riesgo"
+                name="condicion_riesgo"
+                onChange={handleChange}
+                variant="outlined"
+                label="Condición de Riesgo"
+                opciones={catalogos?.condicion_riesgo || ""}
+                value={detalleReporte?.condicion_riesgo || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="motivo_orientacion"
+                name="motivo_orientacion"
+                onChange={handleChange}
+                variant="outlined"
+                label="Motivo Orientación"
+                opciones={catalogos?.motivo_orientacion || ""}
+                value={detalleReporte?.motivo_orientacion || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="control_prenatal"
+                name="control_prenatal"
+                onChange={handleChange}
+                variant="outlined"
+                label="Control Prenatal"
+                opciones={catalogos?.control_prenatal || ""}
+                value={detalleReporte?.control_prenatal || ""}
+                disabled={
+                  detalleReporte?.motivo_orientacion === "Embarazo" ||
+                    detalleReporte?.motivo_orientacion === "Pareja de embarazada"
+                    ? false
+                    : true
+                }
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <InputField
+                id="semana_gestacion"
+                name="semana_gestacion"
+                type="number"
+                onChange={handleChange}
+                variant="outlined"
+                label="Semana de Gestación"
+                onInput={(e) => (e.target.value = e.target.value.slice(0, 2))}
+                value={detalleReporte?.semana_gestacion || ""}
+                disabled={
+                  detalleReporte?.motivo_orientacion === "Embarazo" ||
+                    detalleReporte?.motivo_orientacion === "Pareja de embarazada"
+                    ? false
+                    : true
+                }
+              ></InputField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="orientacion_preprueba"
+                name="orientacion_preprueba"
+                onChange={handleChange}
+                variant="outlined"
+                label="Orientación Preprueba"
+                opciones={catalogos?.orientacion_preprueba || ""}
+                value={detalleReporte?.orientacion_preprueba || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="resultados_tamizaje"
+                name="resultados_tamizaje"
+                onChange={handleChange}
+                variant="outlined"
+                label="Resultados Tamizaje"
+                opciones={catalogos?.resultados_tamizaje || ""}
+                value={detalleReporte?.resultados_tamizaje || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="resultados_prueba_vih"
+                name="resultados_prueba_vih"
+                onChange={handleChange}
+                variant="outlined"
+                label="Resultados Prueba VIH"
+                opciones={catalogos?.resultados_prueba_vih || ""}
+                value={detalleReporte?.resultados_prueba_vih || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="prueba_treponemica"
+                name="prueba_treponemica"
+                onChange={handleChange}
+                variant="outlined"
+                label="Prueba Treponémica"
+                opciones={catalogos?.prueba_treponemica || ""}
+                value={detalleReporte?.prueba_treponemica || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="prueba_no_treponemica"
+                name="prueba_no_treponemica"
+                onChange={handleChange}
+                variant="outlined"
+                label="Resultados No. Treponémica"
+                opciones={catalogos?.prueba_no_treponemica || ""}
+                value={detalleReporte?.prueba_no_treponemica || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="resultado_difucion"
+                name="resultado_difucion"
+                onChange={handleChange}
+                variant="outlined"
+                label="Resultados Difución"
+                opciones={catalogos?.resultado_difucion || ""}
+                value={detalleReporte?.resultado_difucion || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="referencia"
+                name="referencia"
+                onChange={handleChange}
+                variant="outlined"
+                label="Referencia"
+                opciones={catalogos?.referencia || []}
+                value={detalleReporte?.referencia || ""}
+              ></SelectField>
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <SelectField
+                id="uai_ref"
+                name="uai_ref"
+                onChange={handleChange}
+                variant="outlined"
+                label="UAI a la que se refirió"
+                opciones={catalogos?.uai_ref || []}
+                value={detalleReporte?.uai_ref || ""}
+              ></SelectField>
+            </Grid>
+          </Grid>
+        </Paper>
+      </div>
+    </div>
+  );
+};
+
+
+const Observaciones = ({ config, handleChange, detalleReporte }) => {
+
+  const { getCollapseProps, getToggleProps } = useCollapse(config);
+
+  return (
+
+    <div>
+      <div {...getToggleProps()}>
+        <TextField style={{ fontWeight: "bold" }} variant="h5" label="Datos Informativos:"></TextField>
+      </div>
+
+      <div {...getCollapseProps()}>
+        <Paper
+          style={{
+            justifyContent: "center",
+            alignSelf: "center",
+            display: "flex",
+            marginTop: "3%",
+            marginBottom: "3%",
+          }}
+        >
+          <Grid container style={{ padding: "2%" }} spacing={3}>
+            <Grid item xs={12}>
+              <InputField
+                id="observaciones"
+                name="observaciones"
+                onChange={handleChange}
+                variant="outlined"
+                label="Observaciones"
+                rows={5}
+                multiline
+                value={detalleReporte?.observaciones || ""}
+              ></InputField>
+            </Grid>
+          </Grid>
+        </Paper>
+      </div>
+    </div>
+  );
+};
+
+
+
 
 export default Form;
