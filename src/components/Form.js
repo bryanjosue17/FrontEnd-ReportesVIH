@@ -15,9 +15,52 @@ import ReporteDataService from "../services/reportes.service";
 import ButtonComponent from "./Button";
 import moment from "moment";
 import { useHistory } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import StepContent from '@mui/material/StepContent';
+import Fab from '@mui/material/Fab';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import AddIcon from '@mui/icons-material/Add';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
+const steps = [
+  {
+    label: 'Datos Generales',
+
+  },
+  {
+    label: 'Datos de la persona',
+
+  },
+  {
+    label: 'Pruebas realizadas ',
+
+  },
+  {
+    label: 'Observaciones ',
+
+  },
+];
 
 const Form = (props) => {
+
+  const [activeStep, setActiveStep] = React.useState(0);
+
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleReset = () => {
+    setActiveStep(0);
+  };
+
   const history = useHistory();
 
   const navigateHome = () => {
@@ -222,6 +265,7 @@ const Form = (props) => {
           appearance: "error",
           autoDismiss: true,
         });
+        navigateHome();
       })
       .catch((e) => {
         addToast("Ha sucedido un error", {
@@ -270,19 +314,77 @@ const Form = (props) => {
     setCatalogos(catalogs);
   }, []);
 
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down('md'));
 
 
 
   return (
-    <div>
-      <DatosGenerales catalogos={catalogos} detalleReporte={detalleReporte} handleChange={handleChange} config={config}></DatosGenerales>
-      <DatosPersonales catalogos={catalogos} handleSelectChange={handleSelectChange} deptos={deptos} munis={munis} ha detalleReporte={detalleReporte} handleChange={handleChange} config={config}></DatosPersonales>
-      <DatosInformativos catalogos={catalogos} detalleReporte={detalleReporte} handleChange={handleChange} config={config}></DatosInformativos>
-      <Observaciones detalleReporte={detalleReporte} handleChange={handleChange} config={config}></Observaciones>
-      <div style={{ display: "flex", justifyContent: "flex-end", alignContent: "center", margin: "3%" }}>
-        <ButtonComponent variant="contained" label={tipo === "Editar" ? "Editar" : "Crear"} onClick={handleCreateOrEdit}></ButtonComponent>
-        {tipo === "Editar" ? <ButtonComponent variant="contained" label="Eliminar" onClick={handleDelete} style={{ marginLeft: 30, backgroundColor: "red" }}></ButtonComponent> : <></>}
-      </div>
+    <div style={{ height: 'calc(100vh - 60px)' }} >
+
+
+      <Grid container   >
+        {
+          matches && (
+            <Grid item xs={12} md={3} >
+              <Box style={{ display: "flex", alignItems: "center", justifyContent: "center", height: 'calc(100vh - 60px)' }}>
+                <Stepper activeStep={activeStep} orientation="vertical">
+                  {steps.map((step, index) => (
+                    <Step key={step.label}>
+                      <StepLabel
+
+                      >
+                        {step.label}
+                      </StepLabel>
+                      <StepContent>
+
+                        {index === 0 ? <></> : <ButtonComponent
+                          label="Regresar"
+                          variant="outlined"
+                          onClick={handleBack}
+                        >
+
+                        </ButtonComponent>}
+
+                      </StepContent>
+                    </Step>
+                  ))}
+                </Stepper>
+
+              </Box>
+            </Grid>
+          )
+        }
+
+        <Grid item xs={12} md={9} >
+          <div style={{
+
+            justifyContent: "center",
+            alignItems: "center",
+            display: "flex",
+            height: "calc(100vh - 60px)",
+
+          }}>
+            {tipo === "Editar" ? <ButtonComponent variant="contained" label="Eliminar" onClick={handleDelete} style={{ marginLeft: 30, backgroundColor: "red" }}></ButtonComponent> : <></>}
+            {activeStep === 0 ? <DatosGenerales catalogos={catalogos} detalleReporte={detalleReporte} handleChange={handleChange} ></DatosGenerales>
+              : activeStep === 1 ? <DatosPersonales catalogos={catalogos} handleSelectChange={handleSelectChange} deptos={deptos} munis={munis} ha detalleReporte={detalleReporte} handleChange={handleChange} ></DatosPersonales>
+                : activeStep === 2 ? <DatosInformativos catalogos={catalogos} detalleReporte={detalleReporte} handleChange={handleChange} ></DatosInformativos>
+                  : activeStep === 3 ? <Observaciones detalleReporte={detalleReporte} handleChange={handleChange} ></Observaciones>
+                    : <> </>}
+
+            {activeStep === 3 ? <Fab onClick={handleCreateOrEdit} variant="extended" style={{ position: "absolute", bottom: 15, right: 15, backgroundColor: "lightblue" }}>
+              <AddIcon />
+              {tipo === "Editar" ? "Editar" : "Crear"}
+            </Fab>
+              : <Fab onClick={handleNext} variant="extended" style={{ position: "absolute", bottom: 15, right: 15, backgroundColor: "lightblue" }}>
+                <NavigateNextIcon />
+                Siguiente
+              </Fab>}
+          </div>
+        </Grid>
+      </Grid>
+
+
 
 
 
@@ -291,17 +393,16 @@ const Form = (props) => {
 };
 
 
-const DatosGenerales = ({ catalogos, config, handleChange, detalleReporte }) => {
+const DatosGenerales = ({ catalogos, handleChange, detalleReporte }) => {
 
-  const { getCollapseProps, getToggleProps } = useCollapse(config);
 
   return (
-    <div>
-      <div {...getToggleProps()}>
-        <TextField style={{ fontWeight: "bold" }} variant="h5" label="Datos generales:"></TextField>
-      </div>
+    <div style={{
+      width: "80%",
+    }}>
+      <TextField style={{ fontWeight: "bold" }} variant="h5" label="Datos generales:"></TextField>
 
-      <div {...getCollapseProps()}>
+      <div >
         <Paper
           style={{
             justifyContent: "center",
@@ -309,6 +410,7 @@ const DatosGenerales = ({ catalogos, config, handleChange, detalleReporte }) => 
             display: "flex",
             marginTop: "3%",
             marginBottom: "3%",
+
           }}
         >
 
@@ -375,16 +477,17 @@ const DatosGenerales = ({ catalogos, config, handleChange, detalleReporte }) => 
 }
 
 
-const DatosPersonales = ({ catalogos, deptos, munis, handleSelectChange, config, handleChange, detalleReporte }) => {
-  const { getCollapseProps, getToggleProps } = useCollapse(config);
+const DatosPersonales = ({ catalogos, deptos, munis, handleSelectChange, handleChange, detalleReporte }) => {
 
   return (
-    <div>
-      <div {...getToggleProps()}>
-        <TextField style={{ fontWeight: "bold" }} variant="h5" label="Datos personales:"></TextField>
-      </div>
+    <div style={{
+      width: "80%",
+    }}>
 
-      <div {...getCollapseProps()}>
+      <TextField style={{ fontWeight: "bold" }} variant="h5" label="Datos personales:"></TextField>
+
+
+      <div >
         <Paper
           style={{
             justifyContent: "center",
@@ -547,17 +650,18 @@ const DatosPersonales = ({ catalogos, deptos, munis, handleSelectChange, config,
   );
 };
 
-const DatosInformativos = ({ config, catalogos, handleChange, detalleReporte }) => {
+const DatosInformativos = ({ catalogos, handleChange, detalleReporte }) => {
 
-  const { getCollapseProps, getToggleProps } = useCollapse(config);
 
   return (
-    <div>
-      <div {...getToggleProps()}>
-        <TextField style={{ fontWeight: "bold" }} variant="h5" label="Datos generales:"></TextField>
-      </div>
+    <div style={{
+      width: "80%",
+    }}>
 
-      <div {...getCollapseProps()}>
+      <TextField style={{ fontWeight: "bold" }} variant="h5" label="Pruebas realizadas: "></TextField>
+
+
+      <div >
         <Paper
           style={{
             justifyContent: "center",
@@ -788,18 +892,17 @@ const DatosInformativos = ({ config, catalogos, handleChange, detalleReporte }) 
 };
 
 
-const Observaciones = ({ config, handleChange, detalleReporte }) => {
+const Observaciones = ({ handleChange, detalleReporte }) => {
 
-  const { getCollapseProps, getToggleProps } = useCollapse(config);
 
   return (
 
-    <div>
-      <div {...getToggleProps()}>
-        <TextField style={{ fontWeight: "bold" }} variant="h5" label="Datos Informativos:"></TextField>
-      </div>
+    <div style={{
+      width: "80%",
+    }}>
+      <TextField style={{ fontWeight: "bold" }} variant="h5" label="Datos Informativos:"></TextField>
 
-      <div {...getCollapseProps()}>
+      <div>
         <Paper
           style={{
             justifyContent: "center",
