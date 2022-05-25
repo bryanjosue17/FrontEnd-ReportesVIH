@@ -24,7 +24,7 @@ function App() {
       </nav>
       <div style={{
         backgroundColor: "#f5f5f5",
-        
+        height: 'calc(100vh - 60px)'
       }} >
         <Switch>
           <Route exact path={["/", "/inicio"]} component={Home} />
