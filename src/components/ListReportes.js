@@ -16,6 +16,8 @@ import Doc from "./Doc";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import DateTimePicker from "./DatePicker";
 import { Link } from "react-router-dom";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const ListReportes = () => {
 
@@ -46,6 +48,9 @@ const ListReportes = () => {
       dispatch(findReportesByDate(searchReporte));
     }
   };
+
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("md"));
 
 
   const columns = [
@@ -130,10 +135,10 @@ const ListReportes = () => {
           alignItems: "center",
           justifyContent: "center",
           flexDirection: "row",
-          margin: "3%",
+          margin: !matches ? "3%" : "10%",
         }}
       >
-        <div style={{ width: "50%" }}>
+        <div style={{ width: "75%" }}>
           <DateTimePicker
             id="date"
             name="date"
@@ -171,13 +176,14 @@ const ListReportes = () => {
           alignSelf: "center",
           display: "flex",
           flexDirection: "column",
+          width: "90%",
         }}
       >
         <div style={{ margin: "3%" }}>
           <TextField variant="h4" label="Listado de reportes"></TextField>
         </div>
 
-        <div style={{ height: 300, width: 900 }}>
+        <div style={{ height: 300, width: "100%" }}>
           <DataGrid
             rows={reportes || []}
             columns={columns || []}

@@ -10,7 +10,7 @@ function App() {
 
   return (
     <Router>
-      <nav className="navbar navbar-expand navbar-dark bg-dark">
+      <nav  style={{height:"60px"}} className="navbar navbar-expand navbar-dark bg-dark">
         <a  href={"/inicio"} className="navbar-brand" style={{fontWeight: "bold", fontSize: 24}} >
           Reportes VIH
         </a>
@@ -22,7 +22,10 @@ function App() {
           </li>
         </div>
       </nav>
-      <div className="container mt-3">
+      <div style={{
+        backgroundColor: "#f5f5f5",
+        height: 'calc(100vh - 60px)'
+      }} >
         <Switch>
           <Route exact path={["/", "/inicio"]} component={Home} />
           <Route exact path="/reportes" component={Form} />
