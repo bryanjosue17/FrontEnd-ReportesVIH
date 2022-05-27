@@ -24,13 +24,13 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import StepContent from "@mui/material/StepContent";
 import Fab from "@mui/material/Fab";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import AddIcon from "@mui/icons-material/Add";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { MobileStepper, Button } from "@mui/material";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+import { IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const steps = [
   {
@@ -56,10 +56,6 @@ const Form = (props) => {
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
   };
 
   const history = useHistory();
@@ -346,20 +342,28 @@ const Form = (props) => {
         <Grid item xs={12} md={9}>
           <div
             style={{
-              justifyContent: "center",
               alignSelf: "center",
               display: "flex",
               height: "100%",
               backgroundColor: "#f5f5f5",
+              flexDirection: "column",
             }}
           >
             {tipo === "Editar" ? (
-              <ButtonComponent
-                variant="contained"
-                label="Eliminar"
-                onClick={handleDelete}
-                style={{ marginLeft: 30, backgroundColor: "red" }}
-              ></ButtonComponent>
+              <div
+                style={{
+                  alignSelf: "center",
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  width: "100%",
+                  marginTop: "3%",
+                  marginRight: "5%",
+                }}
+              >
+                <IconButton onClick={handleDelete} aria-label="delete">
+                  <DeleteIcon style={{ color: "red" }} />
+                </IconButton>
+              </div>
             ) : (
               <></>
             )}
@@ -393,36 +397,28 @@ const Form = (props) => {
             ) : (
               <> </>
             )}
-            {!matches &&
-              (activeStep === 3 ? (
-                <Fab
-                  onClick={handleCreateOrEdit}
-                  variant="extended"
-                  style={{
-                    position: "absolute",
-                    bottom: 15,
-                    right: 15,
-                    backgroundColor: "lightblue",
-                  }}
-                >
-                  <AddIcon />
-                  {tipo === "Editar" ? "Editar" : "Crear"}
-                </Fab>
-              ) : (
-                <Fab
-                  onClick={handleNext}
-                  variant="extended"
-                  style={{
-                    position: "absolute",
-                    bottom: 15,
-                    right: 15,
-                    backgroundColor: "lightblue",
-                  }}
-                >
-                  <NavigateNextIcon />
-                  Siguiente
-                </Fab>
-              ))}
+            {!matches && (
+              <Fab
+                onClick={activeStep === 3 ? handleCreateOrEdit : handleNext}
+                variant="extended"
+                style={{
+                  position: "absolute",
+                  bottom: 15,
+                  right: 15,
+                  backgroundColor: "lightblue",
+                }}
+              >
+                <KeyboardArrowRight></KeyboardArrowRight>
+
+                {tipo === "Editar"
+                  ? activeStep === 3
+                    ? "Editar"
+                    : "Siguiente"
+                  : activeStep === 3
+                  ? "Insertar"
+                  : "Siguiente"}
+              </Fab>
+            )}
           </div>
           {matches && (
             <MobileStepper
@@ -434,9 +430,14 @@ const Form = (props) => {
                 <Button
                   size="small"
                   onClick={activeStep === 3 ? handleCreateOrEdit : handleNext}
-                  disabled={activeStep === maxSteps }
                 >
-                  {activeStep === 3 ? "Insertar" : "Siguiente"}
+                  {tipo === "Editar"
+                    ? activeStep === 3
+                      ? "Editar"
+                      : "Siguiente"
+                    : activeStep === 3
+                    ? "Insertar"
+                    : "Siguiente"}
                   {theme.direction === "rtl" ? (
                     <KeyboardArrowLeft />
                   ) : (
